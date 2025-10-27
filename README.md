@@ -1,1 +1,35 @@
-# resq_plus
+# Deploy OBDA file
+
+Requirements for virtualization:
+
+- GraphDB
+- OBDA file
+
+Steps for deployment:
+1. Create new virtual repository:
+    1. Access GraphDB instance
+    2. Select "Settings"
+    3. Select "Repositories"
+    4. Click "Create new repository"
+    5. Choose "Ontop Virtual SPARQL"
+
+2. Deploy OBDA file
+    1. Name the repository via "Repository ID"
+    2. Fill the "Connection Information"
+        1. Choose Database driver - PostgreSQL
+        2. Host name
+        3. Port 
+        4. Database name
+        5. Username
+        6. Password
+    3. (OPTIONAL) Test connection
+    4. Attach the file - "OBDA or R2RML file"
+    5. Create
+
+3. Perform test SPARQL query:
+
+```sql
+SELECT * WHERE {
+    ?s ?p ?o .
+} LIMIT 100
+```
