@@ -1,6 +1,6 @@
 
 
-<img width="835" height="316" alt="RESQ+_Logo_Full_Colors_RGB" src="https://github.com/user-attachments/assets/1d3f662d-931a-4941-8e45-4519f1d9d492" />
+<img width="417" height="158" alt="RESQ+_Logo_Full_Colors_RGB" src="https://github.com/user-attachments/assets/1d3f662d-931a-4941-8e45-4519f1d9d492" />
 # Deploy OBDA file
 
 Requirements for virtualization:
