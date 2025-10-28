@@ -1,0 +1,29 @@
+PREFIX resqplus: <http://www.semanticweb.org/catimc/resqplus#>
+PREFIX resqplusSM: <http://www.semanticweb.org/catimc/SemanticCommonDataModel#>
+PREFIX purl: <http://purl.org/biotop/btl2.owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+select ?patient   ?mRSvalue  ?BPsvalue ?BPdvalue where {
+    
+    ?patient resqplusSM:hasPart ?mRS.
+    ?mRS rdf:type resqplus:AdmissionExaminationMRS.
+    ?mRS resqplusSM:hasObservableValue ?mRSv.
+    ?mRSv purl:hasValue ?mRSvalue.
+
+    ?patient resqplusSM:hasPart  ?BPs.
+    ?BPs rdf:type resqplus:AdmissionExaminationBloodPressure.
+    ?BPs resqplusSM:hasObservable <http://snomed.info/id/271649006> .  #systolic blood pressure
+    ?BPs resqplusSM:hasObservableValue ?BPsv.
+    ?BPsv purl:hasValue ?BPsvalue.
+
+    
+    ?patient resqplusSM:hasPart  ?BPd.
+    ?BPd rdf:type resqplus:AdmissionExaminationBloodPressure.
+    ?BPd resqplusSM:hasObservable <http://snomed.info/id/271650006> .  #diastolic blood pressure
+    ?BPd resqplusSM:hasObservableValue ?BPdv.
+    ?BPdv purl:hasValue ?BPdvalue.
+
+FILTER((?BPsvalue >= 180) && (?BPdvalue > 110) && (?mRSvalue > 3)) .
+    
+           
+
+} limit 100

@@ -1,0 +1,9 @@
+PREFIX resqplus: <http://www.semanticweb.org/catimc/resqplus#>
+PREFIX resqplusSM: <http://www.semanticweb.org/catimc/SemanticCommonDataModel#>
+PREFIX purl: <http://purl.org/biotop/btl2.owl#>
+select ?s ?value where {
+    ?s ?p resqplus:AdmissionExaminationMRS.
+    ?s resqplusSM:hasObservableValue ?a.
+    ?a purl:hasValue ?value.
+    FILTER(?value > 3).
+} limit 100
