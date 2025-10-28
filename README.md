@@ -1,6 +1,9 @@
 
 
 <img width="417" height="158" alt="RESQ+_Logo_Full_Colors_RGB" src="https://github.com/user-attachments/assets/1d3f662d-931a-4941-8e45-4519f1d9d492" />
+
+Project website: https://www.resqplus.eu/
+
 # Deploy OBDA file
 
 Requirements for virtualization:
@@ -36,3 +39,8 @@ SELECT * WHERE {
     ?s ?p ?o .
 } LIMIT 100
 ```
+
+
+This project has received funding from the European Union’s Horizon Europe research and innovation programme under grant agreement No:101057603. Views and opinions expressed are however those of the author only and do not necessarily reflect those of the European Union or the European Research Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.
+
+Project website: https://www.resqplus.eu/
