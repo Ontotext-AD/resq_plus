@@ -5,12 +5,12 @@
 
 # Deploy OBDA file
 
-Requirements for virtualization:
+**Requirements for virtualization:**
 
 - GraphDB
 - OBDA file
 
-Steps for deployment:
+**Steps for deployment:**
 1. Create new virtual repository:
     1. Access GraphDB instance
     2. Select "Settings"
