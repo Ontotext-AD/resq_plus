@@ -1,0 +1,102 @@
+[PrefixDeclaration]
+ex:         http://example.org/
+owl:        http://www.w3.org/2002/07/owl#
+rdf:        http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:        http://www.w3.org/XML/1998/namespace
+xsd:        http://www.w3.org/2001/XMLSchema#
+foaf:       http://xmlns.com/foaf/0.1/
+obda:       https://w3id.org/obda/vocabulary#
+rdfs:       http://www.w3.org/2000/01/rdf-schema#
+sct:        http://snomed.info/id/
+btl2:       http://purl.org/biotop/btl2.owl#
+scdm:       http://www.semanticweb.org/catimc/SemanticCommonDataModel#
+resq:       http://www.semanticweb.org/catimc/resqplus#
+ofn:        http://www.ontotext.com/sparql/functions/
+rin:        http://www.semanticweb.org/resqplus/instances#
+data:       http://resqplus-resources/ontologies/resqplus-data#  
+skos:       http://www.w3.org/2004/02/skos/core#
+
+[MappingDeclaration] @collection [[
+
+mappingId   ProviderID
+target      data:Provider_{id} a resq:Provider ; scdm:hasCity {city} ; scdm:hasDepartment {department} ; scdm:hasHospitalEmail {email} ; scdm:hasHospitalType {hospital_type} ; scdm:hasPostalCode {postal_code} ; scdm:isTeaching {is_teaching} ; scdm:street {street} ; scdm:hasSummary {summary} ; skos:prefLabel {name_native} ; skos:altLabel {name_english}@en ; skos:altLabel {short_name} ; scdm:isCreatedAt {created_at}^^xsd:dateTimeStamp.
+source      SELECT * FROM public.core_provider
+
+
+mappingId   ProviderShared
+target      data:Provider_{provider_id} a resq:Provider ; scdm:isDataSharing data:DataSharing_{id} .
+source      SELECT  public.core_provider_data_sharing.id, public.core_provider_data_sharing.provider_id FROM public.core_provider_data_sharing
+
+
+mappingId   DataSharing
+target      data:DataSharing_{id} a resq:DataSharing ;  scdm:isCreatedAt {created_at}. 
+source      SELECT * FROM public.core_provider_data_sharing
+
+
+mappingId   DataSharingExternalEntityRelation
+target      data:DataSharing_{provider_data_sharing_id} a resq:DataSharing ;  scdm:isRelatedTo data:DataSharingExternalEntity_{id}. 
+source      select provider_data_sharing_id, id from core_provider_data_sharing_external_entity
+
+
+mappingId   SharedExternalEntityData
+target      data:DataSharingExternalEntity_{id} a resq:DataSharingExternalEntity ; scdm:hasAggregatedData {aggregated_data} ; scdm:hasSpecificData {specific_data} ; scdm:hasExternalEntity data:ExternalEntity_{external_entity_id}. 
+source      SELECT * FROM public.core_provider_data_sharing_external_entity
+
+mappingId   ExternalEntity
+target      data:ExternalEntity_{id} a resq:ExternalEntity ; skos:prefLabel {name} ; scdm:hasKey {key}. 
+source      SELECT public.core_external_entity.id, public.core_provider_data_sharing_external_entity.external_entity_id, public.core_external_entity.name, public.core_external_entity.key FROM public.core_external_entity, public.core_provider_data_sharing_external_entity
+
+
+mappingId   ProviderSetupRelation
+target      data:Provider_{provider_id} scdm:hasSetup data:ProviderSetup_{id}. 
+source      select provider_id, id FROM public.core_provider_setup cps 
+
+
+mappingId   ProviderSetup
+target      data:ProviderSetup_{id} a resq:ProviderSetup ; scdm:isValidSince {valid_since}^^xsd:dateTimeStamp ; scdm:hasImagingFacility {imaging_facility} ; scdm:hasImagingFacilityAvailability {imaging_facility_availability} ; scdm:hasBeds {number_of_beds} ; scdm:hasStrokePatientPerYear {stroke_patient_per_year} ; scdm:hasStrokeUnit {stroke_unit} ; scdm:doesThrombectomy {thrombectomy}. 
+source      select * FROM public.core_provider_setup cps 
+
+
+
+mappingId   ProviderUserRelation
+target      data:Provider_{provider_id} scdm:isCreatedBy data:User_{created_by_id}. 
+source      select * from public.core_provider_data_sharing 
+
+
+mappingId   User
+target      data:User_{id} a resq:User ; scdm:hasPassword {password} ; scdm:isSuperUser {is_superuser} ; scdm:hasUsername {username} ; scdm:hasFirstName {first_name} ; scdm:hasLastName {last_name} ; scdm:hasEmail {email} ; scdm:isStaff {is_staff} ; scdm:isActive {is_active} ; scdm:isJoined {date_joined}^^xsd:dateTimeStamp ; scdm:hasUuid {uuid} ; scdm:isCreatedAt {created_at} ; scdm:hasTitle {title} ; scdm:hasDescription {description} ; scdm:hasPhoneNumber {phone_number} ; scdm:hasSpeciality {speciality} ; scdm:hasRealm {realm}. 
+source      SELECT * FROM public.core_user 
+
+
+mappingId   ProviderRole
+target      data:User_{user_id} scdm:coordinateProvider data:Provider_{provider_id} ; scdm:hasRole {role}. 
+source      select * from public.core_provider_memberships
+
+
+mappingId   ProviderProviderGroupRelationship
+target      data:Provider_{provider_id} scdm:hasLocation data:ProviderGroup_{providergroup_id}. 
+source      select * from public.core_provider_provider_groups 
+
+
+mappingId   DataSharingProviderGroupRelationship
+target      data:DataSharing_{provider_data_sharing_id} scdm:hasLocation data:ProviderGroup_{provider_group_id}. 
+source      select * from public.core_provider_data_sharing_provider_groups
+
+
+mappingId   ProviderGroup
+target      data:ProviderGroup_{id} a resq:ProviderGroup ; skos:broader data:ProviderGroup_{parent_id} ; scdm:hasName {name} ; scdm:aboutCountry data:Country_{country_id} ; scdm:isGeographical {geographical} ; scdm:hasHospitalNetwork {hospital_network}. 
+source      SELECT * FROM public.core_provider_group
+
+
+mappingId   CountryInformation
+target      data:Country_{id} a resq:Country ; scdm:hasCountryCode {country_code} ; scdm:hasName {name} ; scdm:isCreatedAt {created_at}. 
+source      select * from public.core_country
+
+
+mappingId   ProviderGroupUserRelation
+target      data:User_{user_id} scdm:hasRole {role} ; scdm:coordinateProviderGroup data:ProviderGroup_{provider_group_id}. 
+source      select * from public.core_provider_group_coordinator_assignment
+
+
+
+]]
