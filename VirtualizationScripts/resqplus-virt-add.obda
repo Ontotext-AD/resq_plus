@@ -30,15 +30,19 @@ source      Select "case_id" from "public"."strokehealthcaremodel_inpatientcase"
 
 
 mappingId   ClinicalCaseAdmissionAgeStraight
-target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isAge {age}^^xsd:integer.
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasAge {age}^^xsd:integer.
 source      SELECT "case_id" , "age" from strokehealthcaremodel_inpatientcase si
 
 
 
-mappingId   ClinicalCaseArrivalTime
+mappingId   ClinicalCaseArrivalDate
 target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isArrivalAt {arrival_time}^^xsd:date.
 source      select	case_id, date(hospital_timestamp) as arrival_time from public.strokehealthcaremodel_inpatientcase si 
 
+
+mappingId   ClinicalCaseArrivalTimestamp
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isArrivalTimestamp {hospital_timestamp}^^xsd:dateTime.
+source      select	case_id, hospital_timestamp from public.strokehealthcaremodel_inpatientcase si 
 
 
 mappingId   ClinicalCaseProvider
@@ -1120,6 +1124,12 @@ target      data:DateTimeDatatype_imaging_timestamp_{case_id} rdf:type scdm:Date
 source      select "case_id" , "imaging_timestamp" from strokehealthcaremodel_inpatientcase si where imaging_timestamp is not null
 
 
+mappingId   ImagingTimestampValueDirected
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:imagingDateTime {imaging_timestamp}^^xsd:dateTime. 
+source      select "case_id" , "imaging_timestamp" from strokehealthcaremodel_inpatientcase si where imaging_timestamp is not null
+
+
+
 
 mappingId   ImagingCT
 target      data:ClinicalProcedureSt_DiagnosisImaging_imaging_type_{case_id} rdf:type resq:DiagnosisImaging ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsProcedure data:396205005_{case_id}.
@@ -1633,6 +1643,10 @@ target      data:Door2NeedleTimeObservable_{case_id} rdf:type sct:364713004 .
 source      select "case_id" , "door_to_needle" from strokehealthcaremodel_inpatientcase si  where door_to_needle is not null
 
 
+mappingId   Door2NeedletimeObservableDirected
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dtn {door_to_needle}^^xsd:integer .
+source      select "case_id" , "door_to_needle" from strokehealthcaremodel_inpatientcase si where thrombolysis = True
+
 
 mappingId   ThrombectomyTreatmentDone
 target      data:ClinicalProcedureSt_ThrombectomyTreatment_thrombectomy_{case_id} rdf:type resq:ThrombectomyTreatment ; scdm:procedureContext sct:385658003 ; scdm:representsProcedure data:397046001_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
@@ -1773,6 +1787,13 @@ source      select "case_id" , "door_to_groin" from strokehealthcaremodel_inpati
 mappingId   Door2GroinTimeObservable
 target      data:Door2GroinTimeObservable_{case_id} rdf:type sct:364713004 .
 source      select "case_id" , "door_to_groin" from strokehealthcaremodel_inpatientcase si  where door_to_groin is not null
+
+
+mappingId   Door2GroinTimeObservableDirected
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dtg {door_to_groin}^^xsd:integer .
+source      select "case_id" , "door_to_groin" from strokehealthcaremodel_inpatientcase si where thrombectomy = True
+
+
 
 
 mappingId   mTICIScore
