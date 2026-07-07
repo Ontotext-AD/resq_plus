@@ -1,0 +1,253 @@
+@prefix resqplus: <http://www.semanticweb.org/catimc/resqplus#> .
+@prefix scdm:     <http://www.semanticweb.org/catimc/SemanticCommonDataModel#> .
+@prefix btl2:     <http://purl.org/biotop/btl2.owl#> .
+@prefix sh:       <http://www.w3.org/ns/shacl#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix sct:      <http://snomed.info/id/>.
+
+
+resqplus:ClinicalCaseShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:ClinicalCase ; 
+    
+    # Your existing general rule for hasPart
+    sh:property [
+        sh:path scdm:hasPart ;
+        sh:minCount 1 ;  
+        sh:nodeKind sh:IRI ;
+    ] ;
+    
+     The new rule to ensure at least one StrokeType exists
+     sh:property [
+        sh:path scdm:hasPart ;
+        sh:qualifiedValueShape [
+            sh:class resqplus:StrokeType ; # Checks for rdf:type StrokeType
+        ] ;
+        sh:qualifiedMinCount 1 ; # Ensures AT LEAST one matches the shape above
+        sh:message "Every Clinical Case must have at least one hasPart that is a StrokeType." ;
+    ] ;
+  
+    sh:property [
+        sh:path scdm:hasPart ;
+        sh:qualifiedValueShape [
+            sh:class resqplus:TimeArrivalToHospital ; # Checks for rdf:type TimeArrivalHospital
+        ] ;
+        sh:qualifiedMinCount 1 ; # Ensures AT LEAST one matches the shape above
+        sh:message "Every Clinical Case must have at least one hasPart that is a TimeArrivalHospital." ;
+    ] .  
+
+resqplus:AgeShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:AdmissionAge ;
+    sh:property [
+        sh:path scdm:hasObservableValue ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ; # Validates it's a URI, ignores rdf:type
+    ] ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 130 ;
+        sh:message "Age is out of range" ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:AdmissionNihssShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:AdmissionExaminationNIHSS ;
+    sh:property [
+        sh:path scdm:hasObservableValue ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ; 
+    ] ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 42 ;
+        sh:message "NIHSS is out of range" ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:AdmissionMrsShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:AdmissionExaminationMRS ;
+    sh:property [
+        sh:path scdm:hasObservableValue ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ; 
+    ] ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 6 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+
+resqplus:AdmissionTimestampShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:TimeArrivalToHospital ;
+    sh:property [
+        sh:path scdm:hasObservableValue ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ; 
+    ] ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:dateTime ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+    
+
+
+resqplus:StrokeTypeShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:StrokeType ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path scdm:representsSituation ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ]
+    .
+
+resqplus:AdmissionRiskFactorsShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:AdmissionRiskFactors ;
+    
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ; 
+    ] ;
+    
+    sh:property [
+        sh:path scdm:representsSituation ;
+        sh:minCount 1 ; # Ensures at least one risk factor is present
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            sct:38341003 # hypertension
+            sct:73211009 # diabetes
+            sct:55822004 # hyperlipidemia
+            resqplus:AtrialFibrillationOrFlutter # AF
+            sct:42343007 # congestive_heart_failure
+            sct:77176002 # smoker
+            sct:230690007 # previous_stroke
+            resqplus:TIAstrokeLeadingToHospitalization # previous_ischemic_stroke
+            sct:230706003 # previous_hemorrhagic_stroke
+            resqplus:PreviousMyocardialInfarction # coronary_artery_disease_or_myocardial_infarction
+            sct:86406008 # hiv
+            sct:840539006 # covid
+            resqplus:OtherRiskFactor # other
+            sct:429098002 # vte
+            sct:73430006 # appnea
+            sct:66590003 # drink
+        ) ;
+        sh:message "The risk factor must be one of the approved SNOMED/ResQ+ codes." ;
+    ] .
+
+resqplus:DiagnosisImagingShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:DiagnosisImaging ;
+    sh:property [
+        sh:path ( scdm:temporalContext btl2:hasPart btl2:hasValue ) ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:representsProcedure ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:Door2NeedleTimeShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:Door2NeedleTime ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:Door2GroinTimeShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:Door2GroinTime ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:representsProcedure ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+
+    
