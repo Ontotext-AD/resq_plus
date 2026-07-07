@@ -189,4 +189,65 @@ resqplus:AdmissionRiskFactorsShape
         sh:message "The risk factor must be one of the approved SNOMED/ResQ+ codes." ;
     ] .
 
+resqplus:DiagnosisImagingShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:DiagnosisImaging ;
+    sh:property [
+        sh:path ( scdm:temporalContext btl2:hasPart btl2:hasValue ) ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:representsProcedure ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:Door2NeedleTimeShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:Door2NeedleTime ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:Door2GroinTimeShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:Door2GroinTime ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:representsProcedure ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+
     
