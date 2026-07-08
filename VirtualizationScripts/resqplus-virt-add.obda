@@ -220,10 +220,14 @@ mappingId   ClinicalCaseAdmissionExaminationSAHstrokeStraight
 target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:21454007 .
 source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 4
 
-mappingId   ClinicalCaseAdmissionExaminationCVTstrokestrokeStraight
+mappingId   ClinicalCaseAdmissionExaminationMimicsStrokeStraight
 target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:95455008 .
 source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 5
 
+
+mappingId   ClinicalCaseAdmissionExaminationUDStrokeStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:230690007 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 6 or stroke_type_id = 7
 
 
 
