@@ -1418,6 +1418,55 @@ target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:Str
 source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 5 and imaging_type_id = 6
 
 
+mappingId   MimicStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContex sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 1
+
+mappingId   MimicCTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContex sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 2
+
+mappingId   MimicCTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContex sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 3
+
+mappingId   MimicMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContex sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 4
+
+mappingId   MimicMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContex sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 5
+
+mappingId   MimicMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContex sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 6
+
+
+
+mappingId   UDStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 1
+
+mappingId   UDCTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 2
+
+mappingId   UDCTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 3
+
+mappingId   UDMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 4
+
+mappingId   UDMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 5
+
+mappingId   UDMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 6
 
 
 

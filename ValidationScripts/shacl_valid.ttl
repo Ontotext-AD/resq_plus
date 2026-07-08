@@ -17,7 +17,7 @@ resqplus:ClinicalCaseShape
         sh:nodeKind sh:IRI ;
     ] ;
     
-     The new rule to ensure at least one StrokeType exists
+     # The new rule to ensure at least one StrokeType exists
      sh:property [
         sh:path scdm:hasPart ;
         sh:qualifiedValueShape [
@@ -195,8 +195,7 @@ resqplus:DiagnosisImagingShape
     sh:property [
         sh:path ( scdm:temporalContext btl2:hasPart btl2:hasValue ) ;
         sh:datatype xsd:dateTime ;
-        sh:minCount 1 ;
-    ] ;
+            ] ;
     sh:property [
         sh:path scdm:isResultOf ;
         sh:minCount 1 ;
@@ -205,7 +204,6 @@ resqplus:DiagnosisImagingShape
     ] ;
     sh:property [
         sh:path scdm:representsProcedure ;
-        sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
     ] .
 
