@@ -1,0 +1,46 @@
+@base <http://resqplus-resources/ontologies/resqplus-data#graph/batches/> .
+@prefix adms:       <http://www.w3.org/ns/adms#> .
+@prefix dc:	        <http://purl.org/dc/elements/1.1/> .
+@prefix dcat:	    <http://www.w3.org/ns/dcat#> .
+@prefix dct: 	    <http://purl.org/dc/terms/> .
+@prefix dctype:	    <http://purl.org/dc/dcmitype/> .
+@prefix foaf:	    <http://xmlns.com/foaf/0.1/> .
+@prefix locn:	    <http://www.w3.org/ns/locn#> .
+@prefix odrl:	    <http://www.w3.org/ns/odrl/2/> .
+@prefix owl: 	    <http://www.w3.org/2002/07/owl#> .
+@prefix prov:	    <http://www.w3.org/ns/prov#> .
+@prefix rdf: 	    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:	    <http://www.w3.org/2004/02/skos/core#> .
+@prefix time:	    <http://www.w3.org/2006/time#> .
+@prefix vcard:	    <http://www.w3.org/2006/vcard/ns#> .
+@prefix xsd: 	    <http://www.w3.org/2001/XMLSchema#> .
+@prefix vann:       <http://purl.org/vocab/vann/> .
+@prefix resqplus:   <http://www.semanticweb.org/catimc/resqplus#> .
+@prefix scdm:       <http://www.semanticweb.org/catimc/SemanticCommonDataModel#> .
+@prefix btl2:       <http://purl.org/biotop/btl2.owl#> .
+@prefix sct:        <http://snomed.info/id/>.
+
+<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<branch>>
+        rdf:type                dcat:Dataset ;
+        dct:theme               "database" ;
+        dct:dataset             "RES-Q+ CC" ;
+        dct:title               "RES-Q+ ClinicalCases" ;
+        dct:description         "Clinical case studies regarding stroke management across various hospital settings." ;
+        dct:publisher           <RES-Q+> ;
+        dct:accrualPeriodicity  <http://purl.org/cld/freq/irregular> ;
+        foaf:homepage           <https://www.resqplus.eu> ;
+        dcat:keyword            "stroke care", "clinical cases" ;
+        dct:license             <https://creativecommons.org/licenses/by/> ;
+        dct:rights              "" ;
+
+<RES-Q+>
+        rdf:type   foaf:Agent ;
+        foaf:name  "RES-Q+" .
+
+<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<branch>> dcat:hasVersion http://resqplus-resources/ontologies/resqplus-data#graph/batches/<branch>/<version>>  . 
+<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<branch>/<version>> a dcat:Dataset  ; 
+  dct:issued '<date>'^^xsd:datetime  ; 
+  dct:creator         <RES-Q+> ; 
+  dcat:version        "<version>" ; 
+  dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> .
