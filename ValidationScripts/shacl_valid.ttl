@@ -242,7 +242,7 @@ resqplus:Door2GroinTimeShape
         sh:minCount 1 ;
     ] ;
     sh:property [
-        sh:path scdm:representsProcedure ;
+        sh:path scdm:isResultOf ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
     ] .
