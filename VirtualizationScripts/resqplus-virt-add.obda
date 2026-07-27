@@ -373,6 +373,18 @@ target      data:ClinicalSituationSt_AdmissionGender_sex_{case_id} rdf:type resq
 source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 3
 
 
+mappingId   ClinicalCaseAdmissionGenderMaleStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isGender sct:248153007 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 1
+
+mappingId   ClinicalCaseAdmissionGenderFemaleStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isGender sct:248152002 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 2
+
+mappingId   ClinicalCaseAdmissionGenderUnknownStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isGender sct:32570681000036106 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 3 
+
 
 mappingId   OnsetTimestamp
 target      data:ObservationResultSt_TimeOfSymptomOnset_onset_timestamp_{case_id} rdf:type resq:TimeOfSymptomOnset ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:hasObservableValue data:PrimitiveValue_onset_timestamp_{case_id} ; scdm:hasObservable sct:405795006 .
@@ -3118,6 +3130,25 @@ target      data:19712007_{case_id} rdf:type sct:19712007.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 4
 
 
+
+mappingId   DischargeFacilitySameTypeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedFacility sct:37729005 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 1
+
+mappingId   DischargeFacilityPCHTypeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedFacility resq:PatientTransferToPrimaryCareHospital .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 2
+
+mappingId   DischargeFacilityCSCTypeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedFacility resq:PatientTransferToComprohensiveStrokeCenter .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 3 
+
+mappingId   DischargeFacilityOtherTypeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedFacility sct:19712007 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 4
+
+
+
 mappingId   PatientTransferInHospitalStrokeRehabilitation
 target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_department_{case_id} rdf:type resq:DischargeFacilityDepartment ; scdm:representsProcedure data:PatientTransferInHospitalStrokeRehabilitation_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 1
@@ -3152,6 +3183,25 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   PatientTransferOtherHospitalDepartmentProcedure
 target      data:PatientTransferOtherHospitalDepartment_{case_id} rdf:type resq:PatientTransferOtherHospitalDepartment.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 4
+
+
+
+mappingId   PatientTransferInHospitalStrokeRehabilitationDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:inDepartment sct:37729005 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 1
+
+mappingId   PatientTransferInHospitalPostCareBedDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:inDepartment resq:PatientTransferToPrimaryCareHospital .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 2
+
+mappingId   PatientTransferInHospitalNeurologyDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:inDepartment resq:PatientTransferToComprohensiveStrokeCenter .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 3 
+
+mappingId   PatientTransferOtherHospitalDepartmentDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:inDepartment sct:19712007 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 4
+
 
 
 mappingId   FollowUpMRS

@@ -21,7 +21,7 @@
 @prefix btl2:       <http://purl.org/biotop/btl2.owl#> .
 @prefix sct:        <http://snomed.info/id/>.
 
-<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<branch>>
+<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<batch>>
         rdf:type                dcat:Dataset ;
         dct:theme               "database" ;
         dct:dataset             "RES-Q+ CC" ;
@@ -38,8 +38,8 @@
         rdf:type   foaf:Agent ;
         foaf:name  "RES-Q+" .
 
-<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<branch>> dcat:hasVersion http://resqplus-resources/ontologies/resqplus-data#graph/batches/<branch>/<version>>  . 
-<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<branch>/<version>> a dcat:Dataset  ; 
+<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<batch>> dcat:hasVersion http://resqplus-resources/ontologies/resqplus-data#graph/batches/<batch>/<version>>  . 
+<http://resqplus-resources/ontologies/resqplus-data#graph/batches/<batch>/<version>> a dcat:Dataset  ; 
   dct:issued '<date>'^^xsd:datetime  ; 
   dct:creator         <RES-Q+> ; 
   dcat:version        "<version>" ; 
