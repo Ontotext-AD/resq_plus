@@ -374,15 +374,15 @@ source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where s
 
 
 mappingId   ClinicalCaseAdmissionGenderMaleStraight
-target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isGender sct:248153007 .
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasGender sct:248153007 .
 source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 1
 
 mappingId   ClinicalCaseAdmissionGenderFemaleStraight
-target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isGender sct:248152002 .
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasGender sct:248152002 .
 source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 2
 
 mappingId   ClinicalCaseAdmissionGenderUnknownStraight
-target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isGender sct:32570681000036106 .
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasGender sct:32570681000036106 .
 source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 3 
 
 
@@ -392,7 +392,7 @@ source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where o
 
 mappingId   OnsetTimestampValue
 target      data:PrimitiveValue_onset_timestamp_{case_id} btl2:hasValue {onset_date}^^xsd:date ; btl2:hasValue {onset_time}^^xsd:time . 
-source      SELECT "case_id" , "onset_date" , "onset_time" from strokehealthcaremodel_inpatientcase si
+source      SELECT "case_id" , "onset_date" , "onset_time" from strokehealthcaremodel_inpatientcase si 
 
 
 mappingId   HospitalTimestamp
@@ -2818,11 +2818,11 @@ source      select "case_id" , "door_to_door" from strokehealthcaremodel_inpatie
 
 mappingId   DischargeTimestamp
 target      data:ObservationResultSt_DateOfDischarge_discharge_date_{case_id} rdf:type resq:DateOfDischarge ; scdm:hasObservableValue data:DateTimeDatatype_CurrentOrSpecifiedTime_discharge_date_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id} ; scdm:hasObservable sct:442864001.
-source      select "case_id" from strokehealthcaremodel_inpatientcase si 
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_date is not null
 
 mappingId   DischargeTimestampValue
 target      data:DateTimeDatatype_CurrentOrSpecifiedTime_discharge_date_{case_id} btl2:hasValue {discharge_date}^^xsd:dateTime. 
-source      select "case_id" , "discharge_date" from strokehealthcaremodel_inpatientcase si 
+source      select "case_id" , "discharge_date" from strokehealthcaremodel_inpatientcase si where discharge_date is not null
 
 mappingId   DischargeDateProcedure
 target      data:Procedure_58000006_{case_id} rdf:type sct:58000006.
@@ -3206,19 +3206,21 @@ source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where d
 
 mappingId   FollowUpMRS
 target      data:ObservationResultSt_FollowUpMRS_three_m_mrs_{case_id} rdf:type resq:FollowUpMRS ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id} ; scdm:hasObservableValue data:PrimitiveValue_three_m_mrs_{case_id} ; scdm:hasObservable sct:1255866005 .
-source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mrs is not null
+
 
 mappingId   FollowUpMRSProcedure
 target      data:PrimitiveValue_three_m_mrs_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {three_m_mrs}^^xsd:integer.
-source      SELECT "case_id" , "three_m_mrs" from strokehealthcaremodel_inpatientcase si
+source      SELECT "case_id" , "three_m_mrs" from strokehealthcaremodel_inpatientcase si where three_m_mrs is not null
 
 mappingId   3MonthsFollowUpProcedure
 target      data:Procedure_3MonthsFollowUpProcedure_{case_id} rdf:type resq:3MonthsFollowUpProcedure.
-source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mrs = True 
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mrs is not null
 
 mappingId   ClinicalCaseAdmissionThreeMMRSStraight
 target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasThreeMMRS {three_m_mrs}^^xsd:integer.
-source      SELECT "case_id" , "three_m_mrs" from strokehealthcaremodel_inpatientcase si
+source      SELECT "case_id" , "three_m_mrs" from strokehealthcaremodel_inpatientcase si where  three_m_mrs is not null
+
 
 
 

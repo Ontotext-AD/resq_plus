@@ -274,8 +274,8 @@ resqplus:FollowUpMRSShapes
     sh:targetClass resqplus:FollowUpMRS ;
     sh:property [
         sh:path scdm:hasObservable ;
-        sh:nodeKind sh:IRI ;
         sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
     ] ;
     sh:property [
         sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
