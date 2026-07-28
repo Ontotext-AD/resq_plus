@@ -274,18 +274,17 @@ resqplus:FollowUpMRSShapes
     sh:targetClass resqplus:FollowUpMRS ;
     sh:property [
         sh:path scdm:hasObservable ;
-        sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
     ] ;
     sh:property [
         sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
-        sh:minCount 1 ;
         sh:datatype xsd:integer ;
-        sh:minCount 1 ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 6 ;
+        sh:message "Follow up MRS is out of range"
     ] ;
     sh:property [
         sh:path scdm:isResultOf ;
-        sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
     ] .
 
