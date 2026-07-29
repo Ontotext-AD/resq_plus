@@ -2859,6 +2859,11 @@ mappingId   DischargeDrugsAntidiabeticsRepresentsProcedure
 target      data:PrescriptionOfAntidiabetics_{case_id} rdf:type resq:PrescriptionOfAntidiabetics.
 source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antidiabetics = True
 
+mappingId   DischargeDrugsAntidiabeticsDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfAntidiabetics .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antidiabetics = True
+
+
 
 mappingId   DischargeDrugsAntihypertensives
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_antihypertensives_{case_id}  rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfAntihypertensives_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -2866,6 +2871,10 @@ source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where d
 
 mappingId   DischargeDrugsAntihypertensivesRepresentsProcedure
 target      data:PrescriptionOfAntihypertensives_{case_id} rdf:type resq:PrescriptionOfAntihypertensives.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antihypertensives = True
+
+mappingId   DischargeDrugsAntihypertensivesDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfAntihypertensives .
 source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antihypertensives = True
 
 
@@ -2877,6 +2886,12 @@ mappingId   DischargeDrugsAnyAnticoagulantRepresentsProcedure
 target      data:PrescriptionOfAnyAnticoagulant_{case_id} rdf:type resq:PrescriptionOfAnyAnticoagulant.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_anticoagulant = True
 
+mappingId   DischargeDrugsAnyAnticoagulantDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfAnyAnticoagulant .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_anticoagulant = True
+
+
+
 
 mappingId   DischargeDrugsOtherAnticoagulant
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_other_anticoagulant_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfOtherAnticoagulant_{case_id} ; scdm:isResultOf data:Procedure_32485007_{case_id}.
@@ -2885,6 +2900,12 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsOtherAnticoagulantRepresentsProcedure
 target      data:PrescriptionOfOtherAnticoagulant_{case_id} rdf:type resq:PrescriptionOfOtherAnticoagulant.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_anticoagulant = True
+
+mappingId   DischargeDrugsOtherAnticoagulantDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfOtherAnticoagulant .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_anticoagulant = True
+
+
 
 
 mappingId   DischargeDrugsAnyAntiplatelet
@@ -2895,6 +2916,11 @@ mappingId   DischargeDrugsAnyAntiplateletRepresentsProcedure
 target      data:PrescriptionOfAnyAntiplatelet_{case_id} rdf:type resq:PrescriptionOfAnyAntiplatelet.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_antiplatelet = True
 
+mappingId   DischargeDrugsAnyAntiplateletDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfAnyAntiplatelet .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_antiplatelet = True
+
+
 
 mappingId   DischargeDrugsOtherAntiplatelet
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_other_antiplatelet_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfOtherAntiplatelet_{case_id} ; scdm:isResultOf data:Procedure_32485007_{case_id}.
@@ -2903,6 +2929,11 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsOtherAntiplateletRepresentsProcedure
 target      data:PrescriptionOfOtherAntiplatelet_{case_id} rdf:type resq:PrescriptionOfOtherAntiplatelet.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_antiplatelet = True
+
+mappingId   DischargeDrugsOtherAntiplateletDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfOtherAntiplatelet .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_antiplatelet = True
+
 
 
 mappingId   DischargeDrugsApixaban
@@ -2913,6 +2944,11 @@ mappingId   DischargeDrugsApixabanRepresentsProcedure
 target      data:PrescriptionOfApixabany_{case_id} rdf:type resq:PrescriptionOfApixaban.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_apixaban = True
 
+mappingId   DischargeDrugsApixabanDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfApixaban .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_apixaban = True
+
+
 
 mappingId   DischargeDrugsAsa
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_asa_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfASA_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -2921,6 +2957,11 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsAsaRepresentsProcedure
 target      data:PrescriptionOfASA_{case_id} rdf:type resq:PrescriptionOfASA.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_asa = True
+
+mappingId   DischargeDrugsAsaDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfASA .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_asa = True
+
 
 
 mappingId   DischargeDrugsCilostazol
@@ -2931,6 +2972,11 @@ mappingId   DischargeDrugsCilostazolRepresentsProcedure
 target      data:PrescriptionOfCilostazol_{case_id} rdf:type resq:PrescriptionOfCilostazol.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_cilostazol = True
 
+mappingId   DischargeDrugsCilostazolDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfCilostazol .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_cilostazol = True
+
+
 
 mappingId   DischargeDrugsClopidogrel
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_clopidogrel_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfClopidogrel_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -2939,6 +2985,11 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsClopidogrelRepresentsProcedure
 target      data:PrescriptionOfClopidogrel_{case_id} rdf:type resq:PrescriptionOfClopidogrel.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_clopidogrel = True
+
+mappingId   DischargeDrugsClopidogrelDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfClopidogrel .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_clopidogrel = True
+
 
 
 mappingId   DischargeDrugsDabigatran
@@ -2949,6 +3000,11 @@ mappingId   DischargeDrugsDabigatranRepresentsProcedure
 target      data:PrescriptionOfDabigatran_{case_id} rdf:type resq:PrescriptionOfDabigatran.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dabigatran = True
 
+mappingId   DischargeDrugsDabigatranDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfDabigatran .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dabigatran = True
+
+
 
 mappingId   DischargeDrugsDipyridamole
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_dipyridamole_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfDipyridamole_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -2957,6 +3013,11 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsDipyridamoleRepresentsProcedure
 target      data:PrescriptionOfDipyridamole_{case_id} rdf:type resq:PrescriptionOfDipyridamole.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dipyridamole = True
+
+mappingId   DischargeDrugsDipyridamoleDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfDipyridamole .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dipyridamole = True
+
 
 
 mappingId   DischargeDrugsEdoxaban
@@ -2967,6 +3028,11 @@ mappingId   DischargeDrugsEdoxabanRepresentsProcedure
 target      data:PrescriptionOfEdoxaban_{case_id} rdf:type resq:PrescriptionOfEdoxaban.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_edoxaban = True
 
+mappingId   DischargeDrugsEdoxabanDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfEdoxaban .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_edoxaban = True
+
+
 
 mappingId   DischargeDrugsHeparin
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_heparin_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfHeparin_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -2975,6 +3041,11 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsHeparinRepresentsProcedure
 target      data:PrescriptionOfHeparin_{case_id} rdf:type resq:PrescriptionOfHeparin.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_heparin = True
+
+mappingId   DischargeDrugsHeparinDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfHeparin .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_heparin = True
+
 
 
 mappingId   DischargeDrugsPrasugrel
@@ -2985,6 +3056,11 @@ mappingId   DischargeDrugsPrasugrelRepresentsProcedure
 target      data:PrescriptionOfPrasugrel_{case_id} rdf:type resq:PrescriptionOfPrasugrel.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_prasugrel = True
 
+mappingId   DischargeDrugsPrasugrelDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfPrasugrel .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_prasugrel = True
+
+
 
 mappingId   DischargeDrugsRivaroxaban
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_rivaroxaban_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfRivaroxoban_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -2993,6 +3069,11 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsRivaroxabanRepresentsProcedure
 target      data:PrescriptionOfRivaroxoban_{case_id} rdf:type resq:PrescriptionOfRivaroxoban.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_rivaroxaban = True
+
+mappingId   DischargeDrugsRivaroxabanDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfRivaroxoban .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_rivaroxaban = True
+
 
 
 mappingId   DischargeDrugsStatin
@@ -3003,6 +3084,11 @@ mappingId   DischargeDrugsStatinRepresentsProcedure
 target      data:PrescriptionOfStatin_{case_id} rdf:type resq:PrescriptionOfStatin.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_statin = True
 
+mappingId   DischargeDrugsStatinDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfStatin .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_statin = True
+
+
 
 mappingId   DischargeDrugsTicagrelor
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_ticagrelor_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfTicagrelor_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -3011,6 +3097,10 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsTicagrelorRepresentsProcedure
 target      data:PrescriptionOfTicagrelor_{case_id} rdf:type resq:PrescriptionOfTicagrelor.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticagrelor = True
+
+mappingId   DischargeDrugsTicagrelorDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfTicagrelor .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticagrelor = True
 
 
 mappingId   DischargeDrugsTiclopidine
@@ -3021,6 +3111,11 @@ mappingId   DischargeDrugsTiclopidineRepresentsProcedure
 target      data:PrescriptionOfTiclopidine_{case_id} rdf:type resq:PrescriptionOfTiclopidine.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticlopidine = True
 
+mappingId   DischargeDrugsTiclopidinedDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfTiclopidine .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticlopidine = True
+
+
 
 mappingId   DischargeDrugsWarfarin
 target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_warfarin_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfWarfarin_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -3029,6 +3124,12 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDrugsWarfarinRepresentsProcedure
 target      data:PrescriptionOfWarfarin_{case_id} rdf:type resq:PrescriptionOfWarfarin.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_warfarin = True
+
+mappingId   DischargeDrugsWarfarinDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfWarfarin .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_warfarin = True
+
+
 
 
 mappingId   DischargeDrugsOther
@@ -3039,6 +3140,11 @@ mappingId   DischargeDrugsOtherRepresentsProcedure
 target      data:PrescriptionOfOtherDrug_{case_id} rdf:type resq:PrescriptionOfOtherDrug.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other = True
 
+mappingId   DischargeDrugsOtherDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfOtherDrug .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other = True
+
+
 
 mappingId   DischargeDischargeDestinationHome
 target      data:ClinicalProcedureSt_DischargeDestination_discharge_destination_{case_id} rdf:type resq:DischargeDestination ; scdm:representsProcedure data:306689006_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
@@ -3047,6 +3153,11 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDischargeDestinationHomeProcedure
 target      data:306689006_{case_id} rdf:type sct:306689006.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 1
+
+mappingId   DischargeDrugsOtherDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfOtherDrug .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other = True
+
 
 
 mappingId   DischargeDischargeDestinationSameHospital
@@ -3092,6 +3203,31 @@ source      select "case_id" from strokehealthcaremodel_inpatientcase si where d
 mappingId   DischargeDischargeDestinationAgainstProcedure
 target      data:DischargePatientAgainstMedicalAdvice_{case_id} rdf:type resq:DischargePatientAgainstMedicalAdvice.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 6
+
+
+mappingId   DischargeDischargeDestinationHomeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination sct:306689006 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 1
+
+mappingId   DischargeDischargeDestinationSameHospitalDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination sct:37729005 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 2
+
+mappingId   DischargeDischargeDestinationAnotherHospitalDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination resq:PatientTransferToComprohensiveStrokeCenter .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 3 
+
+mappingId   DischargeDischargeDestinationSocialCareDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination sct:306694006 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 4
+
+mappingId   DischargeDischargeDestinationNotAliveDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination resq:DischargePatientDeadDuringStay .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 5
+
+mappingId   DischargeDischargeDestinationAgainstDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination resq:DischargePatientAgainstMedicalAdvice .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 6
 
 
 
