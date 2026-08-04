@@ -2941,7 +2941,7 @@ target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_apixaba
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_apixaban = True
 
 mappingId   DischargeDrugsApixabanRepresentsProcedure
-target      data:PrescriptionOfApixabany_{case_id} rdf:type resq:PrescriptionOfApixaban.
+target      data:PrescriptionOfApixaban_{case_id} rdf:type resq:PrescriptionOfApixaban.
 source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_apixaban = True
 
 mappingId   DischargeDrugsApixabanDirect

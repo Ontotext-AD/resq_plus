@@ -288,6 +288,43 @@ resqplus:FollowUpMRSShapes
         sh:nodeKind sh:IRI ;
     ] .
 
+resqplus:DischargePrescriptionDrugShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:DischargePrescriptionDrug ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:nodeKind sh:IRI ; 
+
+    ] ;
+    
+    sh:property [
+        sh:path ( scdm:representsProcedure rdf:type );
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            resqplus:PrescriptionOfAntidiabetics
+            resqplus:PrescriptionOfAntihypertensives 
+            resqplus:PrescriptionOfAnyAnticoagulant 
+            resqplus:PrescriptionOfOtherAnticoagulant
+            resqplus:PrescriptionOfAnyAntiplatelet 
+            resqplus:PrescriptionOfOtherAntiplatelet 
+            resqplus:PrescriptionOfApixaban 
+            resqplus:PrescriptionOfASA 
+            resqplus:PrescriptionOfCilostazol 
+            resqplus:PrescriptionOfClopidogrel 
+            resqplus:PrescriptionOfDabigatran 
+            resqplus:PrescriptionOfDipyridamole
+            resqplus:PrescriptionOfEdoxaban 
+            resqplus:PrescriptionOfHeparin 
+            resqplus:PrescriptionOfPrasugrel 
+            resqplus:PrescriptionOfRivaroxoban 
+            resqplus:PrescriptionOfStatin 
+            resqplus:PrescriptionOfTicagrelor
+            resqplus:PrescriptionOfTiclopidine
+            resqplus:PrescriptionOfWarfarin
+            resqplus:PrescriptionOfOtherDrug
+        ) ;
+        sh:message "The discharge medication must be one of the approved SNOMED/ResQ+ codes." ;
+    ] .
 
 resqplus:DischargeFacilityDepartmentShapes
     a sh:NodeShape ;
