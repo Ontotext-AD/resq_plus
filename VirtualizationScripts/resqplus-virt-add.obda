@@ -317,14 +317,9 @@ target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart  data:Clinica
 source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
 
 
-mappingId   ClinicalCase
-target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ObservationResultSt_FollowUpMRS_three_m_mrs_{case_id} .
+mappingId   ClinicalCaseFollowUp
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ObservationResultSt_FollowUpMRS_three_m_mrs_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id}.
 source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
-
-
-
-
-
 
 
 
@@ -3359,6 +3354,67 @@ source      SELECT "case_id" , "three_m_mrs" from strokehealthcaremodel_inpatien
 
 
 
+
+
+mappingId   3MonthsFollowUpIsResultOf
+target      data:Procedure_3MonthsFollowUpProcedure_{case_id} rdf:type resq:3MonthsFollowUpProcedure.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id is not null
+
+
+mappingId   FollowUpContactTel
+target      data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id} rdf:type resq:FollowUpContactMode  ; scdm:representsProcedure data:TelemedicineFollowUp_{case_id} ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 1
+
+mappingId   3MonthsFollowUpProcedureTel
+target      data:TelemedicineFollowUp_{case_id} rdf:type resq:TelemedicineFollowUp.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id  = 1
+
+
+mappingId   ClinicalCaseThreeMContactTelemedicineStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasContactMode resq:TelemedicineFollowUp.
+source      SELECT "case_id"  from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 1
+
+
+mappingId   FollowUpContactVis
+target      data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id} rdf:type resq:FollowUpContactMode  ; scdm:representsProcedure data:OutpatientClinicFollowUp_{case_id} ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 2
+
+mappingId   3MonthsFollowUpProcedureVis
+target      data:OutpatientClinicFollowUp_{case_id} rdf:type resq:OutpatientClinicFollowUp.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id  = 2
+
+
+mappingId   ClinicalCaseThreeMContactVisStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasContactMode resq:OutpatientClinicFollowUp.
+source      SELECT "case_id"  from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id  = 2
+
+
+mappingId   FollowUpContactNMobile
+target      data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id} rdf:type resq:FollowUpContactMode  ; scdm:representsProcedure data:MobileAppFollowUP_{case_id} ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 3
+
+mappingId   3MonthsFollowUpProcedureMobile
+target      data:MobileAppFollowUP_{case_id} rdf:type resq:MobileAppFollowUP.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id  = 3
+
+
+mappingId   ClinicalCaseThreeMContactMobileStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasContactMode resq:MobileAppFollowUP.
+source      SELECT "case_id"  from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id  = 3
+
+
+mappingId   FollowUpContactWeb
+target      data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id} rdf:type resq:FollowUpContactMode  ; scdm:representsProcedure data:WebAppFollowUP_{case_id} ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 4
+
+mappingId   3MonthsFollowUpProcedureWeb
+target      data:WebAppFollowUP_{case_id} rdf:type resq:WebAppFollowUP.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id  = 4
+
+
+mappingId   ClinicalCaseThreeMContactWebStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasContactMode resq:WebAppFollowUP.
+source      SELECT "case_id"  from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 4
 
 
 ]]
