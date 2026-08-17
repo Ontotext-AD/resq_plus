@@ -510,6 +510,11 @@ target      data:AdmissionICUOrStrokeUnit_{case_id} rdf:type resq:AdmissionICUOr
 source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where hospitalized_in_id = 1
 
 
+mappingId   HospitalizedInAdmissionICUOrStrokeUnitStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isHospitalizedIn resq:AdmissionICUOrStrokeUnit.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where hospitalized_in_id = 1
+
+
 mappingId   HospitalizedInAdmissionMonitoredBedWithTelemetry
 target      data:ClinicalSituationSt_AdmissionPatientHospitalizedIn_hospitalized_in_{case_id} rdf:type resq:AdmissionPatientHospitalizedIn ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:representsSituation data:AdmissionMonitoredBedWithTelemetry.
 source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where hospitalized_in_id = 2
@@ -646,12 +651,18 @@ target      data:ObservationResultSt_AdmissionExaminationCholesterol_cholesterol
 source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" where cholesterol is not null
 
 mappingId   AdmissionCholesterolPrimitiveValue
-target      data:PrimitiveValue_cholesterol_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {cholesterol}^^xsd:integer.
+target      data:PrimitiveValue_cholesterol_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {cholesterol}^^xsd:float.
 source      SELECT "case_id" , "cholesterol" from "public"."strokehealthcaremodel_inpatientcase" where cholesterol is not null
 
 mappingId   AdmissionCholesterolProcedure
 target      data:Procedure_113079009_{case_id} rdf:type sct:113079009.
 source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" where cholesterol is not null
+
+
+mappingId   AdmissionCholesterolPrimitiveStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasAdCholesterol {cholesterol}^^xsd:float.
+source      SELECT "case_id" , "cholesterol" from strokehealthcaremodel_inpatientcase si where cholesterol is not null
+
 
 
 mappingId   ProcedureSystolicPressure
