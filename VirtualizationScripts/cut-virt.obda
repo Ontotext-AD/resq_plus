@@ -1,0 +1,1411 @@
+[PrefixDeclaration]
+ex:         http://example.org/
+owl:        http://www.w3.org/2002/07/owl#
+rdf:        http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:        http://www.w3.org/XML/1998/namespace
+xsd:        http://www.w3.org/2001/XMLSchema#
+foaf:       http://xmlns.com/foaf/0.1/
+obda:       https://w3id.org/obda/vocabulary#
+rdfs:       http://www.w3.org/2000/01/rdf-schema#
+sct:        http://snomed.info/id/
+btl2:       http://purl.org/biotop/btl2.owl#
+scdm:       http://www.semanticweb.org/catimc/SemanticCommonDataModel#
+resq:       http://www.semanticweb.org/catimc/resqplus#
+ofn:        http://www.ontotext.com/sparql/functions/
+rin:        http://www.semanticweb.org/resqplus/instances#
+data:       http://resqplus-resources/ontologies/resqplus-data#  
+
+[MappingDeclaration] @collection [[ 
+
+
+mappingId   ClinicalCaseID
+target      data:Case_{case_id} a resq:ClinicalCase ; resq:caseId "{label}" .
+source      SELECT si."case_id" as case_id , ss.case_id as label from "public"."strokehealthcaremodel_inpatientcase" si join "strokehealthcaremodel_casemodel" ss on si.case_id = ss.id
+
+mappingId   ClinicalCaseProvider
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:Provider_{provider_id} .
+source      Select "case_id", "provider_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+mappingId   ClinicalCaseProviderStright
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasProvider data:Provider_{provider_id} .
+source      Select "case_id", "provider_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+
+
+
+
+
+
+
+mappingId   ClinicalCaseAdmissionData
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ObservationResultSt_AdmissionAge_age_{case_id} ; scdm:hasPart data:ClinicalSituationSt_AdmissionGender_sex_{case_id} ; scdm:hasPart data:ObservationResultSt_TimeArrivalToHospital_hospital_timestamp_{case_id} .
+source      Select "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+mappingId   AdmissionProcedure
+target      data:Procedure_32485007_{case_id} rdf:type sct:32485007.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si
+
+
+
+mappingId   ClinicalCaseAdmissionAgeStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasAge {age}^^xsd:integer.
+source      SELECT "case_id" , "age" from strokehealthcaremodel_inpatientcase si
+
+mappingId   Age
+target      data:ObservationResultSt_AdmissionAge_age_{case_id} rdf:type resq:AdmissionAge ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:hasObservableValue data:PrimitiveValue_age_{case_id} ; scdm:hasObservable sct:445518008 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si
+
+mappingId   AgeValue
+target      data:PrimitiveValue_age_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {age}^^xsd:integer.
+source      SELECT "case_id" , "age" from strokehealthcaremodel_inpatientcase si
+
+
+
+mappingId   ClinicalCaseAdmissionGenderMaleStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasGender sct:248153007 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 1
+
+mappingId   ClinicalCaseAdmissionGenderFemaleStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasGender sct:248152002 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 2
+
+mappingId   ClinicalCaseAdmissionGenderUnknownStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasGender sct:32570681000036106 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 3 
+
+
+mappingId   SexMale
+target      data:ClinicalSituationSt_AdmissionGender_sex_{case_id} rdf:type resq:AdmissionGender ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:interpretsObservable sct:184100006 ; scdm:representsSituation sct:248153007 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 1
+
+mappingId   SexFemale
+target      data:ClinicalSituationSt_AdmissionGender_sex_{case_id} rdf:type resq:AdmissionGender ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:interpretsObservable sct:184100006 ;  scdm:representsSituation sct:248152002.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 2
+
+mappingId   SexOther
+target      data:ClinicalSituationSt_AdmissionGender_sex_{case_id} rdf:type resq:AdmissionGender ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:interpretsObservable sct:184100006 ; scdm:representsSituation sct:32570681000036106.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where sex_id = 3
+
+
+
+
+mappingId   ClinicalCaseArrivalDateStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isArrivalAt {arrival_time}^^xsd:date.
+source      select	case_id, date(hospital_timestamp) as arrival_time from public.strokehealthcaremodel_inpatientcase si 
+
+
+mappingId   ClinicalCaseArrivalTimestampStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isArrivalTimestamp {hospital_timestamp}^^xsd:dateTime.
+source      select	case_id, hospital_timestamp from public.strokehealthcaremodel_inpatientcase si 
+
+
+mappingId   HospitalTimestamp
+target      data:ObservationResultSt_TimeArrivalToHospital_hospital_timestamp_{case_id} rdf:type resq:TimeArrivalToHospital ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:hasObservableValue data:PrimitiveValue_hospital_timestamp_{case_id} ; scdm:hasObservable sct:405799000.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si
+
+mappingId   HospitalTimestampValue
+target      data:PrimitiveValue_hospital_timestamp_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {hospital_timestamp}^^xsd:dateTime.
+source      SELECT "case_id" , "hospital_timestamp" from strokehealthcaremodel_inpatientcase si
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mappingId   ClinicalCaseAdmissionExamination
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ObservationResultSt_AdmissionExaminationMRS_prestroke_mrs_{case_id} ; scdm:hasPart data:ObservationResultSt_AdmissionExaminationNIHSS_nihss_score_{case_id} ; scdm:hasPart data:ObservationResultSt_AdmissionExaminationCholesterol_cholesterol_{case_id} .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+
+
+mappingId   AdmissionMRSStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasAdMrsValue {prestroke_mrs}^^xsd:integer.
+source      SELECT "case_id", "prestroke_mrs" from "public"."strokehealthcaremodel_inpatientcase" where prestroke_mrs is not null
+
+
+mappingId   PreStrokeMRS
+target      data:ObservationResultSt_AdmissionExaminationMRS_prestroke_mrs_{case_id} rdf:type resq:AdmissionExaminationMRS ; scdm:hasObservable sct:1255866005 ; scdm:hasObservableValue data:PrimitiveValue_prestroke_mrs_{case_id} ; scdm:isResultOf data:Procedure_84100007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" where prestroke_mrs is not null
+
+mappingId   PrimitiveValuePreStrokeMRS
+target      data:PrimitiveValue_prestroke_mrs_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {prestroke_mrs}^^xsd:integer.
+source      SELECT "case_id", "prestroke_mrs" from "public"."strokehealthcaremodel_inpatientcase" where prestroke_mrs is not null
+
+mappingId   ProcedurePreStrokeMRS
+target      data:Procedure_84100007_{case_id} rdf:type sct:84100007.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" where prestroke_mrs is not null
+
+
+
+mappingId   AdmissionNihssStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasAdNihssValue {nihss_score}^^xsd:integer.
+source      SELECT "case_id" , "nihss_score" from strokehealthcaremodel_inpatientcase si where nihss_score is not null
+
+
+mappingId   AdmissionNihss
+target      data:ObservationResultSt_AdmissionExaminationNIHSS_nihss_score_{case_id} rdf:type resq:AdmissionExaminationNIHSS ; scdm:isResultOf data:Procedure_450742003_{case_id} ; scdm:hasObservableValue data:PrimitiveValue_nihss_score_{case_id} ; scdm:hasObservable sct:450743008 ; btl2:isPartOf data:Procedure_32485007_{case_id} .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where nihss_score is not null
+
+mappingId   AdmissionNihssProcedure
+target      data:Procedure_450742003_{case_id} rdf:type sct:450742003.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where nihss_score is not null
+
+mappingId   AdmissionNihssValue
+target      data:PrimitiveValue_nihss_score_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {nihss_score}^^xsd:integer.
+source      SELECT "case_id" , "nihss_score" from strokehealthcaremodel_inpatientcase si where nihss_score is not null
+
+
+
+mappingId   AdmissionCholesterolStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasAdCholesterol {cholesterol}^^xsd:float.
+source      SELECT "case_id" , "cholesterol" from strokehealthcaremodel_inpatientcase si where cholesterol is not null
+
+
+mappingId   AdmissionCholesterol
+target      data:ObservationResultSt_AdmissionExaminationCholesterol_cholesterol_{case_id} rdf:type resq:AdmissionExaminationCholesterol ; scdm:isResultOf data:Procedure_113079009_{case_id} ; scdm:hasObservableValue data:PrimitiveValue_cholesterol_{case_id} ; scdm:hasObservable sct:102739008. 
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" where cholesterol is not null
+
+mappingId   AdmissionCholesterolPrimitiveValue
+target      data:PrimitiveValue_cholesterol_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {cholesterol}^^xsd:float.
+source      SELECT "case_id" , "cholesterol" from "public"."strokehealthcaremodel_inpatientcase" where cholesterol is not null
+
+mappingId   AdmissionCholesterolProcedure
+target      data:Procedure_113079009_{case_id} rdf:type sct:113079009.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" where cholesterol is not null
+
+
+
+
+
+
+
+
+
+
+
+
+mappingId   ClinicalCaseAdmissionRiskFactor
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_hypertension_{case_id} ;  scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_diabetes_{case_id} ;   scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_hyperlipidemia_{case_id} ;  scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_atrial_fibrillation_{case_id}; scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_congestive_heart_failure_{case_id} ;   scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_smoker_last_10_years_{case_id} ;   scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_smoker_{case_id} ; scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_previous_stroke_{case_id} ;    scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_previous_ischemic_stroke_{case_id} ;   scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_previous_hemorrhagic_stroke_{case_id} ;    scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_coronary_artery_disease_or_myocardial_infarction_{case_id} ; scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_hiv_{case_id} ;    scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_covid_{case_id} ;  scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_other_{case_id} ; scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_vte_{case_id} ; scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_sleep_apnea_{case_id} ; scdm:hasPart data:ClinicalSituationSt_AdmissionRiskFactors_risk_alcohol_overuse_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+
+mappingId   ClinicalCaseAdmissionExaminationHypertensionStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:38341003.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_hypertension = True
+
+mappingId   ClinicalCaseAdmissionExaminationDiabetesStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:73211009.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_diabetes = True
+
+mappingId   ClinicalCaseAdmissionExaminationHyperlipidemiaStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:55822004.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_hyperlipidemia = True
+
+mappingId   ClinicalCaseAdmissionExaminationAtrialFibStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk resq:AtrialFibrillationOrFlutter.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_atrial_fibrillation = True
+
+mappingId   ClinicalCaseAdmissionExaminationHeartFailureStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:42343007 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_congestive_heart_failure = True
+
+mappingId   ClinicalCaseAdmissionExaminationSmokerStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:77176002.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_smoker_last_10_years = True or risk_smoker = True
+
+mappingId   ClinicalCaseAdmissionExaminationPreviousStrokeStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:230690007 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_previous_stroke = True
+
+
+mappingId   ClinicalCaseAdmissionExaminationTIAStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk resq:TIAstrokeLeadingToHospitalization .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_previous_ischemic_stroke = True 
+
+
+mappingId   ClinicalCaseAdmissionExaminationHemorrhagicStrStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:230706003 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_previous_hemorrhagic_stroke = True 
+
+mappingId   ClinicalCaseAdmissionExaminationMyocardiaInfStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk resq:PreviousMyocardialInfarction .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_coronary_artery_disease_or_myocardial_infarction = True 
+
+mappingId   ClinicalCaseAdmissionExaminationHIVStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:86406008 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_hiv = True 
+
+mappingId   ClinicalCaseAdmissionExaminationCovidStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:840539006 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_covid = True 
+
+mappingId   ClinicalCaseAdmissionExaminationOtherRisksStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk resq:OtherRiskFactor .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_other = True 
+
+mappingId   ClinicalCaseAdmissionExaminationVTEStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:429098002 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_vte = True 
+
+mappingId   ClinicalCaseAdmissionExaminationAppneaRisksStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:73430006 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_sleep_apnea = True 
+
+
+mappingId   ClinicalCaseAdmissionExaminationAlcoholOverUseRisksStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasRisk sct:66590003 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_alcohol_overuse = True 
+
+
+mappingId   AdmissionRiskFactorHypertension
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_hypertension_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:38341003 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_hypertension = True
+
+mappingId   AdmissionRiskFactorDiabetes
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_diabetes_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:73211009 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_diabetes = True
+
+mappingId   AdmissionRiskFactorHyperlipidemia
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_hyperlipidemia_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:55822004 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_hyperlipidemia = True     
+
+mappingId   AdmissionRiskFactorArterialFibrillation
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_atrial_fibrillation_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation resq:AtrialFibrillationOrFlutter; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_atrial_fibrillation = True     
+
+mappingId   AdmissionRiskFactorHeartFailure
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_congestive_heart_failure_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:42343007 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_congestive_heart_failure = True     
+
+mappingId   AdmissionRiskFactorSmoker10
+target      data:ClinicalSituationSt_AdmissionRiskFactorsActiveSmoker_risk_smoker_last_10_years_{case_id} rdf:type resq:AdmissionRiskFactorsActiveSmoker ; scdm:representsSituation sct:77176002 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_smoker_last_10_years = True     
+
+mappingId   AdmissionRiskFactorSmoker
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_smoker_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:77176002 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_smoker = True     
+
+mappingId   AdmissionRiskFactorPreviousStroke
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_previous_stroke_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_previous_stroke = True     
+
+mappingId   AdmissionRiskFactorIschemicStrokre
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_previous_ischemic_stroke_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation resq:TIAstrokeLeadingToHospitalization ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_previous_ischemic_stroke = True     
+
+mappingId   AdmissionRiskFactorHemorrhagic
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_previous_hemorrhagic_stroke_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:230706003 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_previous_hemorrhagic_stroke = True     
+
+mappingId   AdmissionRiskFactorCoronaryArteryDiseaseOrMyocardialInfarction
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_coronary_artery_disease_or_myocardial_infarction_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation resq:PreviousMyocardialInfarction ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_coronary_artery_disease_or_myocardial_infarction = True     
+
+mappingId   AdmissionRiskFactorHiv
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_hiv_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:86406008 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_hiv = True     
+
+mappingId   AdmissionRiskFactorCovid
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_covid_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:840539006 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_covid = True     
+
+mappingId   AdmissionRiskFactorOther
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_other_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation resq:OtherRiskFactor ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_other = True     
+
+mappingId   AdmissionRiskFactorVTE
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_vte_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:429098002 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_vte = True
+
+mappingId   AdmissionRiskFactorApnea
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_sleep_apnea_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:73430006 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_sleep_apnea = True
+
+mappingId   AdmissionRiskFactorDrinkAlcohol
+target      data:ClinicalSituationSt_AdmissionRiskFactors_risk_alcohol_overuse_{case_id} rdf:type resq:AdmissionRiskFactors ; scdm:representsSituation sct:66590003 ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where risk_alcohol_overuse = True
+
+
+
+
+
+
+
+
+
+
+
+
+
+mappingId   ClinicalCaseDiagnosisAssessment
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ObservationResultSt_DiagnosisImaging_imaging_timestamp_{case_id} ; scdm:hasPart data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+mappingId   DiagnosisAssessmentIsResultOf
+target      data:Procedure_165197003_{case_id} rdf:type sct:165197003.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si 
+
+
+
+mappingId   ImagingTimestampValueStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:imagingDateTime {imaging_timestamp}^^xsd:dateTime. 
+source      select "case_id" , "imaging_timestamp" from strokehealthcaremodel_inpatientcase si where imaging_timestamp is not null
+
+
+mappingId   ImagingTimestamp
+target      data:ObservationResultSt_DiagnosisImaging_imaging_timestamp_{case_id} rdf:type resq:DiagnosisImaging ; scdm:temporalContext data:CurrentOrSpecifiedTime_imaging_timestamp_{case_id}; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsProcedure data:ImagingTypeProcedureValueSet_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where imaging_timestamp is not null
+
+mappingId   ImagingTimestampPreValue
+target      data:CurrentOrSpecifiedTime_imaging_timestamp_{case_id} rdf:type sct:410512000 ; btl2:hasPart data:DateTimeDatatype_imaging_timestamp_{case_id}. 
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where imaging_timestamp is not null
+
+mappingId   ImagingTimestampValue
+target      data:DateTimeDatatype_imaging_timestamp_{case_id} rdf:type scdm:DateTimeDatatype ; btl2:hasValue {imaging_timestamp}^^xsd:dateTime. 
+source      select "case_id" , "imaging_timestamp" from strokehealthcaremodel_inpatientcase si where imaging_timestamp is not null
+
+
+
+
+mappingId   ClinicalCaseAdmissionExaminationIschemicStrokeStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:422504002 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 1 
+
+
+mappingId   ClinicalCaseAdmissionExaminationCHStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:274100004 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 2
+
+mappingId   ClinicalCaseAdmissionExaminationTIAstrokeStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:266257000 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 3
+
+mappingId   ClinicalCaseAdmissionExaminationSAHstrokeStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:21454007 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 4
+
+mappingId   ClinicalCaseAdmissionExaminationMimicsStrokeStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:95455008 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 5
+
+
+mappingId   ClinicalCaseAdmissionExaminationUDStrokeStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasStrokeType sct:230690007 .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase" si where stroke_type_id = 6 or stroke_type_id = 7
+
+
+
+
+
+
+
+mappingId   IschemicStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:422504002 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 1 and imaging_type_id = 1
+
+mappingId   IschemicStrokeCTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:422504002 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 1 and imaging_type_id = 2
+
+mappingId   IschemicStrokeCTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:422504002 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 1 and imaging_type_id = 3
+
+mappingId   IschemicStrokeMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:422504002 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 1 and imaging_type_id = 4
+
+mappingId   IschemicStrokeMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:422504002 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 1 and imaging_type_id = 5
+
+mappingId   IschemicStrokeMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:422504002 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 1 and imaging_type_id = 6
+
+mappingId   IschemicStrokeMRandDWIorFLAIRandMRAandperfusionNull
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:422504002.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 1 and imaging_type_id is null
+
+
+
+mappingId   ICHStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:274100004 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 2 and imaging_type_id = 1
+
+mappingId   ICHCTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:274100004 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 2 and imaging_type_id = 2
+
+mappingId   ICHCTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:274100004 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 2 and imaging_type_id = 3
+
+mappingId   ICHMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:274100004 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 2 and imaging_type_id = 4
+
+mappingId   ICHMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:274100004 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 2 and imaging_type_id = 5
+
+mappingId   ICHMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:274100004 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 2 and imaging_type_id = 6
+
+mappingId   ICHMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:274100004 .
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 2 and imaging_type_id is null
+
+
+
+mappingId   TIAStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:266257000 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 3 and imaging_type_id = 1
+
+mappingId   TIACTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:266257000 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 3 and imaging_type_id = 2
+
+mappingId   TIACTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:266257000 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 3 and imaging_type_id = 3
+
+mappingId   TIAMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:266257000 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 3 and imaging_type_id = 4
+
+mappingId   TIAMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:266257000 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 3 and imaging_type_id = 5
+
+mappingId   TIAMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:266257000 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 3 and imaging_type_id = 6
+
+mappingId   TIAMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:266257000 .
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 3 and imaging_type_id is null
+
+
+
+mappingId   SAHStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:21454007 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 4 and imaging_type_id = 1
+
+mappingId   SAHCTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:21454007 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 4 and imaging_type_id = 2
+
+mappingId   SAHCTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:21454007 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 4 and imaging_type_id = 3
+
+mappingId   SAHMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:21454007 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 4 and imaging_type_id = 4
+
+mappingId   SAHMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:21454007 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 4 and imaging_type_id = 5
+
+mappingId   SAHMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:21454007 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 4 and imaging_type_id = 6
+
+mappingId   SAHMRandDWIorFLAIRandMRAandperfusionNull
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:21454007 .
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 4 and imaging_type_id is null
+
+
+
+mappingId   CVTStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:95455008 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 5 and imaging_type_id = 1
+
+mappingId   CVTCTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:95455008 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 5 and imaging_type_id = 2
+
+mappingId   CVTCTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:95455008 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 5 and imaging_type_id = 3
+
+mappingId   CVTMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:95455008 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 5 and imaging_type_id = 4
+
+mappingId   CVTMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:95455008 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 5 and imaging_type_id = 5
+
+mappingId   CVTMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:95455008 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 5 and imaging_type_id = 6
+
+mappingId   CVTMRandDWIorFLAIRandMRAandperfusionNull
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:95455008 .
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 5 and imaging_type_id is null
+
+
+
+mappingId   MimicStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContext sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 1
+
+mappingId   MimicCTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContext sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 2
+
+mappingId   MimicCTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContext sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 3
+
+mappingId   MimicMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContext sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 4
+
+mappingId   MimicMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContext sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 5
+
+mappingId   MimicMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContext sct:410516002 ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id = 6
+
+
+mappingId   MimicMRandDWIorFLAIRandMRAandperfusionNull
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:procedureContext sct:410516002 ; scdm:representsSituation sct:230690007.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 6 and imaging_type_id is null
+
+
+mappingId   UDStrokeCT
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:396205005_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 1
+
+mappingId   UDCTandCTA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:NonContrastCT&CTAngiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 2
+
+mappingId   UDCTandCTAandPerfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:NonContrastCT&CTAngiography&CTPerfusion_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 3
+
+mappingId   UDMRandDWIorFLAIR
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWIOrFLAIR_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 4
+
+mappingId   UDMRandDWIorFLAIRandMRA
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWIOrFLAIR&Mrangiography_{case_id}.
+source      SELECT case_id from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 5
+
+mappingId   UDMRandDWIorFLAIRandMRAandperfusion
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007 ; scdm:isResultOf data:MRDWI&FLAIR&MRangiography&MRPerfusion_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id = 6
+
+mappingId   UDStrokeTypeNull
+target      data:ClinicalSituationSt_StrokeType_stroke_type_{case_id} a resq:StrokeType ; scdm:isResultOf data:Procedure_165197003_{case_id} ; scdm:representsSituation sct:230690007.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where stroke_type_id = 7 and imaging_type_id is null
+
+
+
+
+mappingId   ClinicalCaseThrombolysisThrombectomy
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ClinicalProcedureSt_ThrombolysisTreatment_thrombolysis_{case_id} ; scdm:hasPart data:ObservationResultSt_Door2NeedleTime_door_to_needle_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_ThrombectomyTreatment_thrombectomy_{case_id} ; scdm:hasPart  data:ObservationResultSt_Door2GroinTime_door_to_groin_{case_id} .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+
+mappingId   ThrombolysisOrThrombectomyTreatmentIsResultOf
+target      data:Procedure_277132007_{case_id} rdf:type sct:277132007.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si 
+
+
+mappingId   ThrombolysisTreatmentDoneStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasIVT sct:385658003.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombolysis = True
+
+mappingId   ThrombolysisTreatmentNotDoneStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasIVT sct:385660001.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombolysis = False
+
+
+mappingId   ThrombolysisTreatmentNullStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasIVT sct:410537005.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombolysis is null
+
+
+
+mappingId   ThrombolysisTreatmentDone
+target      data:ClinicalProcedureSt_ThrombolysisTreatment_thrombolysis_{case_id} rdf:type resq:ThrombolysisTreatment ; scdm:procedureContext sct:385658003 ; scdm:representsProcedure data:472191000119101_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombolysis = True
+
+mappingId   ThrombolysisTreatmentRepresentsProcedure
+target      data:472191000119101_{case_id} rdf:type sct:472191000119101.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si
+
+mappingId   ThrombolysisTreatmentNotDone
+target      data:ClinicalProcedureSt_ThrombolysisTreatment_thrombolysis_{case_id} rdf:type resq:ThrombolysisTreatment ; scdm:procedureContext sct:385660001 ; scdm:representsProcedure data:472191000119101_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombolysis = False
+
+mappingId   ThrombolysisTreatmentUnknown
+target      data:ClinicalProcedureSt_ThrombolysisTreatment_thrombolysis_{case_id} rdf:type resq:ThrombolysisTreatment ; scdm:procedureContext sct:410537005 ; scdm:representsProcedure data:472191000119101_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombolysis is null
+
+
+
+mappingId   Door2NeedletimeObservableStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dtn {door_to_needle}^^xsd:integer .
+source      select "case_id" , "door_to_needle" from strokehealthcaremodel_inpatientcase si where thrombolysis = True
+
+
+mappingId   ThrombolysisTreatmentDoor2Needletime
+target      data:ObservationResultSt_Door2NeedleTime_door_to_needle_{case_id} rdf:type resq:Door2NeedleTime ; scdm:hasObservable resq:Door2NeedleTimeObservable ; scdm:hasObservableValue data:PrimitiveValue_door_to_needle_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombolysis = True 
+
+mappingId   ThrombolysisTreatmentDoor2NeedletimeObservation
+target      data:PrimitiveValue_door_to_needle_{case_id} btl2:hasValue {door_to_needle}^^xsd:integer .
+source      select "case_id" , "door_to_needle" from strokehealthcaremodel_inpatientcase si where thrombolysis = True
+
+mappingId   Door2NeedletimeObservable
+target      data:Door2NeedleTimeObservable_{case_id} rdf:type sct:364713004 .
+source      select "case_id" , "door_to_needle" from strokehealthcaremodel_inpatientcase si  where door_to_needle is not null
+
+
+
+
+
+mappingId   ThrombectomyTreatmentDoneStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasMT sct:385658003.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy = True
+
+mappingId   ThrombectomyTreatmentNotDoneStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasMT sct:385660001.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy = False
+
+
+mappingId   ThrombectomyTreatmentNullStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasMT sct:410537005.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy is null
+
+
+
+mappingId   ThrombectomyTreatmentDone
+target      data:ClinicalProcedureSt_ThrombectomyTreatment_thrombectomy_{case_id} rdf:type resq:ThrombectomyTreatment ; scdm:procedureContext sct:385658003 ; scdm:representsProcedure data:397046001_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy = True 
+
+mappingId   ThrombectomyTreatmentRepresentsProcedure
+target      data:397046001_{case_id} rdf:type sct:397046001.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si
+
+
+mappingId   ThrombectomyTreatmentNotDone
+target      data:ClinicalProcedureSt_ThrombectomyTreatment_thrombectomy_{case_id} rdf:type resq:ThrombectomyTreatment ; scdm:procedureContext sct:385660001 ; scdm:representsProcedure data:397046001_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy = False 
+
+mappingId   ThrombectomyTreatmentNone
+target      data:ClinicalProcedureSt_ThrombectomyTreatment_thrombectomy_{case_id} rdf:type resq:ThrombectomyTreatment ; scdm:procedureContext sct:410537005 ; scdm:representsProcedure data:397046001_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
+source      select "case_id"  from strokehealthcaremodel_inpatientcase si where thrombectomy is null 
+
+
+
+
+mappingId   Door2GroinTimeObservableStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dtg {door_to_groin}^^xsd:integer .
+source      select "case_id" , "door_to_groin" from strokehealthcaremodel_inpatientcase si where thrombectomy = True
+
+
+mappingId   ThrombectomyTreatmentDoor2Groin
+target      data:ObservationResultSt_Door2GroinTime_door_to_groin_{case_id} rdf:type resq:Door2GroinTime ; scdm:hasObservable resq:Door2GroinTimeObservable ; scdm:hasObservableValue data:PrimitiveValue_door_to_groin_{case_id} ; scdm:isResultOf data:Procedure_277132007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy = True 
+
+mappingId   ThrombectomyTreatmentDoor2GroinObservation
+target      data:PrimitiveValue_door_to_groin_{case_id} btl2:hasValue {door_to_groin}^^xsd:integer .
+source      select "case_id" , "door_to_groin" from strokehealthcaremodel_inpatientcase si where thrombectomy = True
+
+mappingId   Door2GroinTimeObservable
+target      data:Door2GroinTimeObservable_{case_id} rdf:type sct:364713004 .
+source      select "case_id" , "door_to_groin" from strokehealthcaremodel_inpatientcase si  where door_to_groin is not null
+
+
+
+
+
+mappingId   ClinicalCaseSwallowingPreNotification
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ClinicalProcedureSt_PostAcuteSwallowingScreening_swallowing_screening_done_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_AdmissionEMSPrenotification_ems_prenotification_{case_id} ; ; scdm:hasPart data:ClinicalSituationSt_AdmissionPatientHospitalizedIn_hospitalized_in_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+
+mappingId   SwallowingDoneStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasSwallowingTests sct:385658003.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy = True
+
+mappingId   SwallowingNotDoneStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasSwallowingTests sct:385660001.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy = False
+
+
+mappingId   SwallowingNotApplicableStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasSwallowingTests sct:385432009.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where thrombectomy is null
+
+
+mappingId   SwallowingDone
+target      data:ClinicalProcedureSt_PostAcuteSwallowingScreening_swallowing_screening_done_{case_id} rdf:type resq:PostAcuteSwallowingScreening ; scdm:procedureContext sct:385658003 ; scdm:representsProcedure data:PostAcuteSwallowingScreeningValueSet_{case_id} ; scdm:isResultOf data:Procedure_PostAcuteCareProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where swallowing_screening_done_id = 1
+
+mappingId   SwallowingRepresentsProcedure
+target      data:PostAcuteSwallowingScreeningValueSet_{case_id} rdf:type resq:PostAcuteSwallowingScreeningValueSet.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where swallowing_screening_done_id is not null
+
+mappingId   SwallowingRepresentsProcedure
+target      data:Procedure_PostAcuteCareProcedure_{case_id} rdf:type resq:PostAcuteCareProcedure.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si
+
+
+mappingId   SwallowingNo
+target      data:ClinicalProcedureSt_PostAcuteSwallowingScreening_swallowing_screening_done_{case_id} rdf:type resq:PostAcuteSwallowingScreening ; scdm:procedureContext sct:385660001 ; scdm:representsProcedure data:PostAcuteSwallowingScreeningValueSet_{case_id} ; scdm:isResultOf data:Procedure_PostAcuteCareProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where swallowing_screening_done_id = 2
+
+mappingId   SwallowingNotApplicable
+target      data:ClinicalProcedureSt_PostAcuteSwallowingScreening_swallowing_screening_done_{case_id} rdf:type resq:PostAcuteSwallowingScreening ; scdm:procedureContext sct:385432009 ; scdm:representsProcedure data:PostAcuteSwallowingScreeningValueSet_{case_id} ; scdm:isResultOf data:Procedure_PostAcuteCareProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where swallowing_screening_done_id = 3
+
+
+mappingId   SwallowingTypeProcedure
+target      data:PostAcuteSwallowingScreeningValueSet_{case_id} rdf:type resq:PostAcuteSwallowingScreeningValueSet.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where swallowing_screening_type_id is not null
+
+
+
+
+mappingId   SwallowingDoneStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isPrenotify resq:EMSPrenotification.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where ems_prenotification = True
+
+
+mappingId   ArrivalModeTransportationByPrivateFromGP
+target      data:ClinicalProcedureSt_AdmissionEMSPrenotification_ems_prenotification_{case_id} rdf:type resq:AdmissionEMSPrenotification ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:representsProcedure data:EMSPrenotification_{case_id}.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where ems_prenotification = True
+
+mappingId   ArrivalModeTransportationByPrivateFromGPProcedure
+target      data:EMSPrenotification_{case_id} rdf:type resq:EMSPrenotification.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where ems_prenotification = True
+
+
+mappingId   HospitalizedInAdmissionICUOrStrokeUnit
+target      data:ClinicalSituationSt_AdmissionPatientHospitalizedIn_hospitalized_in_{case_id} rdf:type resq:AdmissionPatientHospitalizedIn ; scdm:isResultOf data:Procedure_32485007_{case_id} ; scdm:representsSituation data:AdmissionICUOrStrokeUnit.
+source      SELECT case_id  from public.strokehealthcaremodel_inpatientcase si where hospitalized_in_id = 1
+
+mappingId   HospitalizedInAdmissionICUOrStrokeUnitProcedure
+target      data:AdmissionICUOrStrokeUnit_{case_id} rdf:type resq:AdmissionICUOrStrokeUnit.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where hospitalized_in_id = 1
+
+
+mappingId   HospitalizedInAdmissionICUOrStrokeUnitStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:isHospitalizedIn resq:AdmissionICUOrStrokeUnit.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where hospitalized_in_id = 1
+
+
+
+mappingId   ClinicalCaseDischargeTreatment
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_antidiabetics_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_antihypertensives_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_any_anticoagulant_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_any_antiplatelet_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_other_anticoagulant_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_other_antiplatelet_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_apixaban_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_asa_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_cilostazol_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_clopidogrel_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_dabigatran_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_dipyridamole_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_edoxaban_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_heparin_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_prasugrel_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_rivaroxaban_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_statin_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_ticagrelor_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_ticlopidine_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_warfarin_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_other_{case_id} .
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+
+
+mappingId   DischargeDrugsAntidiabetics
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_antidiabetics_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfAntidiabetics_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antidiabetics = True
+
+mappingId   DischargeDrugsAntidiabeticsRepresentsProcedure
+target      data:PrescriptionOfAntidiabetics_{case_id} rdf:type resq:PrescriptionOfAntidiabetics.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antidiabetics = True
+
+mappingId   DischargeDrugsAntidiabeticsDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfAntidiabetics .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antidiabetics = True
+
+
+
+mappingId   DischargeDrugsAntihypertensives
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_antihypertensives_{case_id}  rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfAntihypertensives_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antihypertensives = True
+
+mappingId   DischargeDrugsAntihypertensivesRepresentsProcedure
+target      data:PrescriptionOfAntihypertensives_{case_id} rdf:type resq:PrescriptionOfAntihypertensives.
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antihypertensives = True
+
+mappingId   DischargeDrugsAntihypertensivesDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfAntihypertensives .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_antihypertensives = True
+
+
+mappingId   DischargeDrugsAnyAnticoagulant
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_any_anticoagulant_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfAnyAnticoagulant_{case_id} ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_anticoagulant = True
+
+mappingId   DischargeDrugsAnyAnticoagulantRepresentsProcedure
+target      data:PrescriptionOfAnyAnticoagulant_{case_id} rdf:type resq:PrescriptionOfAnyAnticoagulant.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_anticoagulant = True
+
+mappingId   DischargeDrugsAnyAnticoagulantDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfAnyAnticoagulant .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_anticoagulant = True
+
+
+
+
+mappingId   DischargeDrugsOtherAnticoagulant
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_other_anticoagulant_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfOtherAnticoagulant_{case_id} ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_anticoagulant = True
+
+mappingId   DischargeDrugsOtherAnticoagulantRepresentsProcedure
+target      data:PrescriptionOfOtherAnticoagulant_{case_id} rdf:type resq:PrescriptionOfOtherAnticoagulant.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_anticoagulant = True
+
+mappingId   DischargeDrugsOtherAnticoagulantDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfOtherAnticoagulant .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_anticoagulant = True
+
+
+
+
+mappingId   DischargeDrugsAnyAntiplatelet
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_any_antiplatelet_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfAnyAntiplatelet_{case_id} ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_antiplatelet = True
+
+mappingId   DischargeDrugsAnyAntiplateletRepresentsProcedure
+target      data:PrescriptionOfAnyAntiplatelet_{case_id} rdf:type resq:PrescriptionOfAnyAntiplatelet.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_antiplatelet = True
+
+mappingId   DischargeDrugsAnyAntiplateletDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfAnyAntiplatelet .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_any_antiplatelet = True
+
+
+
+mappingId   DischargeDrugsOtherAntiplatelet
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_other_antiplatelet_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfOtherAntiplatelet_{case_id} ; scdm:isResultOf data:Procedure_32485007_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_antiplatelet = True
+
+mappingId   DischargeDrugsOtherAntiplateletRepresentsProcedure
+target      data:PrescriptionOfOtherAntiplatelet_{case_id} rdf:type resq:PrescriptionOfOtherAntiplatelet.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_antiplatelet = True
+
+mappingId   DischargeDrugsOtherAntiplateletDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfOtherAntiplatelet .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other_antiplatelet = True
+
+
+
+mappingId   DischargeDrugsApixaban
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_apixaban_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfApixaban_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_apixaban = True
+
+mappingId   DischargeDrugsApixabanRepresentsProcedure
+target      data:PrescriptionOfApixaban_{case_id} rdf:type resq:PrescriptionOfApixaban.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_apixaban = True
+
+mappingId   DischargeDrugsApixabanDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfApixaban .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_apixaban = True
+
+
+
+mappingId   DischargeDrugsAsa
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_asa_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfASA_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_asa = True
+
+mappingId   DischargeDrugsAsaRepresentsProcedure
+target      data:PrescriptionOfASA_{case_id} rdf:type resq:PrescriptionOfASA.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_asa = True
+
+mappingId   DischargeDrugsAsaDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfASA .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_asa = True
+
+
+
+mappingId   DischargeDrugsCilostazol
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_cilostazol_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfCilostazol_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_cilostazol = True
+
+mappingId   DischargeDrugsCilostazolRepresentsProcedure
+target      data:PrescriptionOfCilostazol_{case_id} rdf:type resq:PrescriptionOfCilostazol.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_cilostazol = True
+
+mappingId   DischargeDrugsCilostazolDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfCilostazol .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_cilostazol = True
+
+
+
+mappingId   DischargeDrugsClopidogrel
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_clopidogrel_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfClopidogrel_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_clopidogrel = True
+
+mappingId   DischargeDrugsClopidogrelRepresentsProcedure
+target      data:PrescriptionOfClopidogrel_{case_id} rdf:type resq:PrescriptionOfClopidogrel.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_clopidogrel = True
+
+mappingId   DischargeDrugsClopidogrelDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfClopidogrel .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_clopidogrel = True
+
+
+
+mappingId   DischargeDrugsDabigatran
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_dabigatran_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfDabigatran_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dabigatran = True
+
+mappingId   DischargeDrugsDabigatranRepresentsProcedure
+target      data:PrescriptionOfDabigatran_{case_id} rdf:type resq:PrescriptionOfDabigatran.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dabigatran = True
+
+mappingId   DischargeDrugsDabigatranDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfDabigatran .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dabigatran = True
+
+
+
+mappingId   DischargeDrugsDipyridamole
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_dipyridamole_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfDipyridamole_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dipyridamole = True
+
+mappingId   DischargeDrugsDipyridamoleRepresentsProcedure
+target      data:PrescriptionOfDipyridamole_{case_id} rdf:type resq:PrescriptionOfDipyridamole.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dipyridamole = True
+
+mappingId   DischargeDrugsDipyridamoleDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfDipyridamole .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_dipyridamole = True
+
+
+
+mappingId   DischargeDrugsEdoxaban
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_edoxaban_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfEdoxaban_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_edoxaban = True
+
+mappingId   DischargeDrugsEdoxabanRepresentsProcedure
+target      data:PrescriptionOfEdoxaban_{case_id} rdf:type resq:PrescriptionOfEdoxaban.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_edoxaban = True
+
+mappingId   DischargeDrugsEdoxabanDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfEdoxaban .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_edoxaban = True
+
+
+
+mappingId   DischargeDrugsHeparin
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_heparin_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfHeparin_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_heparin = True
+
+mappingId   DischargeDrugsHeparinRepresentsProcedure
+target      data:PrescriptionOfHeparin_{case_id} rdf:type resq:PrescriptionOfHeparin.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_heparin = True
+
+mappingId   DischargeDrugsHeparinDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfHeparin .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_heparin = True
+
+
+
+mappingId   DischargeDrugsPrasugrel
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_prasugrel_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfPrasugrel_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_prasugrel = True
+
+mappingId   DischargeDrugsPrasugrelRepresentsProcedure
+target      data:PrescriptionOfPrasugrel_{case_id} rdf:type resq:PrescriptionOfPrasugrel.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_prasugrel = True
+
+mappingId   DischargeDrugsPrasugrelDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfPrasugrel .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_prasugrel = True
+
+
+
+mappingId   DischargeDrugsRivaroxaban
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_rivaroxaban_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfRivaroxoban_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_rivaroxaban = True
+
+mappingId   DischargeDrugsRivaroxabanRepresentsProcedure
+target      data:PrescriptionOfRivaroxoban_{case_id} rdf:type resq:PrescriptionOfRivaroxoban.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_rivaroxaban = True
+
+mappingId   DischargeDrugsRivaroxabanDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfRivaroxoban .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_rivaroxaban = True
+
+
+
+mappingId   DischargeDrugsStatin
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_statin_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfStatin_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_statin = True
+
+mappingId   DischargeDrugsStatinRepresentsProcedure
+target      data:PrescriptionOfStatin_{case_id} rdf:type resq:PrescriptionOfStatin.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_statin = True
+
+mappingId   DischargeDrugsStatinDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfStatin .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_statin = True
+
+
+
+mappingId   DischargeDrugsTicagrelor
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_ticagrelor_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfTicagrelor_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticagrelor = True
+
+mappingId   DischargeDrugsTicagrelorRepresentsProcedure
+target      data:PrescriptionOfTicagrelor_{case_id} rdf:type resq:PrescriptionOfTicagrelor.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticagrelor = True
+
+mappingId   DischargeDrugsTicagrelorDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfTicagrelor .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticagrelor = True
+
+
+mappingId   DischargeDrugsTiclopidine
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_ticlopidine_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfTiclopidine_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticlopidine = True
+
+mappingId   DischargeDrugsTiclopidineRepresentsProcedure
+target      data:PrescriptionOfTiclopidine_{case_id} rdf:type resq:PrescriptionOfTiclopidine.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticlopidine = True
+
+mappingId   DischargeDrugsTiclopidinedDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfTiclopidine .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_ticlopidine = True
+
+
+
+mappingId   DischargeDrugsWarfarin
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_warfarin_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfWarfarin_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_warfarin = True
+
+mappingId   DischargeDrugsWarfarinRepresentsProcedure
+target      data:PrescriptionOfWarfarin_{case_id} rdf:type resq:PrescriptionOfWarfarin.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_warfarin = True
+
+mappingId   DischargeDrugsWarfarinDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfWarfarin .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_warfarin = True
+
+
+
+
+mappingId   DischargeDrugsOther
+target      data:ClinicalProcedureSt_DischargePrescriptionDrug_discharge_other_{case_id} rdf:type resq:DischargePrescriptionDrug ; scdm:procedureContext sct:385651009 ; scdm:representsProcedure data:PrescriptionOfOtherDrug_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other = True
+
+mappingId   DischargeDrugsOtherRepresentsProcedure
+target      data:PrescriptionOfOtherDrug_{case_id} rdf:type resq:PrescriptionOfOtherDrug.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other = True
+
+mappingId   DischargeDrugsOtherDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfOtherDrug .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other = True
+
+
+
+mappingId   DischargeDischargeDestinationHome
+target      data:ClinicalProcedureSt_DischargeDestination_discharge_destination_{case_id} rdf:type resq:DischargeDestination ; scdm:representsProcedure data:306689006_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 1
+
+mappingId   DischargeDischargeDestinationHomeProcedure
+target      data:306689006_{case_id} rdf:type sct:306689006.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 1
+
+mappingId   DischargeDrugsOtherDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedMedication resq:PrescriptionOfOtherDrug .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_other = True
+
+
+
+mappingId   DischargeDischargeDestinationSameHospital
+target      data:ClinicalProcedureSt_DischargeDestination_discharge_destination_{case_id} rdf:type resq:DischargeDestination ; scdm:representsProcedure data:37729005_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 2
+
+mappingId   DischargeDischargeDestinationSameHospitalProcedure
+target      data:37729005_{case_id} rdf:type sct:37729005.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 2
+
+
+mappingId   DischargeDischargeDestinationAnotherHospital
+target      data:ClinicalProcedureSt_DischargeDestination_discharge_destination_{case_id} rdf:type resq:DischargeDestination ; scdm:representsProcedure data:19712007_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 3
+
+mappingId   DischargeDischargeDestinationAnotherHospitalProcedure
+target      data:19712007_{case_id} rdf:type sct:19712007.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 3
+
+
+mappingId   DischargeDischargeDestinationSocialCare
+target      data:ClinicalProcedureSt_DischargeDestination_discharge_destination_{case_id} rdf:type resq:DischargeDestination ; scdm:representsProcedure data:306694006_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 4
+
+mappingId   DischargeDischargeDestinationSocialCareProcedure
+target      data:306694006_{case_id} rdf:type sct:306694006.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 4
+
+
+mappingId   DischargeDischargeDestinationNotAlive
+target      data:ClinicalProcedureSt_DischargeDestination_discharge_destination_{case_id} rdf:type resq:DischargeDestination ; scdm:representsProcedure data:DischargePatientDeadDuringStay_{case_id} ; scdm:procedureContext sct:385660001 ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 5
+
+mappingId   DischargeDischargeDestinationNotAliveProcedure
+target      data:DischargePatientDeadDuringStay_{case_id} rdf:type resq:DischargePatientDeadDuringStay ; scdm:representsSituation sct:371828006 ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 5
+
+
+mappingId   DischargeDischargeDestinationAgainst
+target      data:ClinicalProcedureSt_DischargeDestination_discharge_destination_{case_id} rdf:type resq:DischargeDestination ; scdm:representsProcedure data:DischargePatientAgainstMedicalAdvice_{case_id} ; scdm:procedureContext sct:385660001 ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 6
+
+mappingId   DischargeDischargeDestinationAgainstProcedure
+target      data:DischargePatientAgainstMedicalAdvice_{case_id} rdf:type resq:DischargePatientAgainstMedicalAdvice.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 6
+
+
+mappingId   DischargeDischargeDestinationHomeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination sct:306689006 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 1
+
+mappingId   DischargeDischargeDestinationSameHospitalDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination sct:37729005 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 2
+
+mappingId   DischargeDischargeDestinationAnotherHospitalDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination resq:PatientTransferToComprohensiveStrokeCenter .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 3 
+
+mappingId   DischargeDischargeDestinationSocialCareDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination sct:306694006 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 4
+
+mappingId   DischargeDischargeDestinationNotAliveDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination resq:DischargePatientDeadDuringStay .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 5
+
+mappingId   DischargeDischargeDestinationAgainstDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargeDestination resq:DischargePatientAgainstMedicalAdvice .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_destination_id = 6
+
+
+
+mappingId   DischargeFacilitySameType
+target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_type_{case_id} rdf:type resq:DischargeFacilityType ; scdm:representsProcedure data:37729005_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 1
+
+mappingId   DischargeFacilityTypeSameProcedure
+target      data:37729005_{case_id} rdf:type sct:37729005.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 1
+
+mappingId   DischargeFacilityPCHType
+target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_type_{case_id} rdf:type resq:DischargeFacilityType ; scdm:representsProcedure data:PatientTransferToPrimaryCareHospital_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 2
+
+mappingId   DischargeFacilityTypePCHProcedure
+target      data:PatientTransferToPrimaryCareHospital_{case_id} rdf:type resq:PatientTransferToPrimaryCareHospital.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 2
+
+
+mappingId   DischargeFacilityCSCType
+target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_type_{case_id} rdf:type resq:DischargeFacilityType ; scdm:representsProcedure data:PatientTransferToComprohensiveStrokeCenter_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 3
+
+mappingId   DischargeFacilityTypeCSCProcedure
+target      data:PatientTransferToComprohensiveStrokeCenter_{case_id} rdf:type resq:PatientTransferToComprohensiveStrokeCenter.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 3
+
+
+mappingId   DischargeFacilityOtherType
+target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_type_{case_id} rdf:type resq:DischargeFacilityType ; scdm:representsProcedure data:19712007_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 4
+
+mappingId   DischargeFacilityOtherTypeProcedure
+target      data:19712007_{case_id} rdf:type sct:19712007.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 4
+
+
+
+mappingId   DischargeFacilitySameTypeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedFacility sct:37729005 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 1
+
+mappingId   DischargeFacilityPCHTypeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedFacility resq:PatientTransferToPrimaryCareHospital .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 2
+
+mappingId   DischargeFacilityCSCTypeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedFacility resq:PatientTransferToComprohensiveStrokeCenter .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 3 
+
+mappingId   DischargeFacilityOtherTypeDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:dischargedFacility sct:19712007 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_type_id = 4
+
+
+
+mappingId   PatientTransferInHospitalStrokeRehabilitation
+target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_department_{case_id} rdf:type resq:DischargeFacilityDepartment ; scdm:representsProcedure data:PatientTransferInHospitalStrokeRehabilitation_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 1
+
+mappingId   PatientTransferInHospitalStrokeRehabilitationProcedure
+target      data:PatientTransferInHospitalStrokeRehabilitation_{case_id} rdf:type resq:PatientTransferInHospitalStrokeRehabilitation.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 1
+
+
+mappingId   PatientTransferInHospitalPostCareBed
+target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_department_{case_id} rdf:type resq:DischargeFacilityDepartment ; scdm:representsProcedure data:PatientTransferInHospitalPostCareBed_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 2
+
+mappingId   PatientTransferInHospitalPostCareBedProcedure
+target      data:PatientTransferInHospitalPostCareBed_{case_id} rdf:type resq:PatientTransferInHospitalPostCareBed.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 2
+
+
+mappingId   PatientTransferInHospitalNeurology
+target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_department_{case_id} rdf:type resq:DischargeFacilityDepartment ; scdm:representsProcedure data:PatientTransferInHospitalNeurology_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 3
+
+mappingId   PatientTransferInHospitalNeurologyProcedure
+target      data:PatientTransferInHospitalNeurology_{case_id} rdf:type resq:PatientTransferInHospitalNeurology.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 3
+
+
+mappingId   PatientTransferOtherHospitalDepartment
+target      data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_type_{case_id} rdf:type resq:DischargeFacilityDepartment ; scdm:representsProcedure data:PatientTransferOtherHospitalDepartment_{case_id} ; scdm:isResultOf data:Procedure_58000006_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 4
+
+mappingId   PatientTransferOtherHospitalDepartmentProcedure
+target      data:PatientTransferOtherHospitalDepartment_{case_id} rdf:type resq:PatientTransferOtherHospitalDepartment.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 4
+
+
+
+mappingId   PatientTransferInHospitalStrokeRehabilitationDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:inDepartment sct:37729005 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 1
+
+mappingId   PatientTransferInHospitalPostCareBedDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:inDepartment resq:PatientTransferToPrimaryCareHospital .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 2
+
+mappingId   PatientTransferInHospitalNeurologyDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:inDepartment resq:PatientTransferToComprohensiveStrokeCenter .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 3 
+
+mappingId   PatientTransferOtherHospitalDepartmentDirect
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:inDepartment sct:19712007 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where discharge_facility_department_id = 4
+
+
+
+mappingId   ClinicalCaseDischargeDestinations
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart  data:ClinicalProcedureSt_DischargeDestination_discharge_destination_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_type_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_DischargeFacilityType_discharge_facility_department_{case_id}. 
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+
+mappingId   ClinicalCaseFollowUp
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasPart data:ObservationResultSt_FollowUpMRS_three_m_mrs_{case_id} ; scdm:hasPart data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id}.
+source      SELECT "case_id" from "public"."strokehealthcaremodel_inpatientcase"
+
+
+mappingId   FollowUpMRS
+target      data:ObservationResultSt_FollowUpMRS_three_m_mrs_{case_id} rdf:type resq:FollowUpMRS ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id} ; scdm:hasObservableValue data:PrimitiveValue_three_m_mrs_{case_id} ; scdm:hasObservable sct:1255866005 .
+source      SELECT "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mrs is not null
+
+
+mappingId   FollowUpMRSProcedure
+target      data:PrimitiveValue_three_m_mrs_{case_id} rdf:type scdm:QuantitativeResultValue ; btl2:hasValue {three_m_mrs}^^xsd:integer.
+source      SELECT "case_id" , "three_m_mrs" from strokehealthcaremodel_inpatientcase si where three_m_mrs is not null
+
+mappingId   3MonthsFollowUpProcedure
+target      data:Procedure_3MonthsFollowUpProcedure_{case_id} rdf:type resq:3MonthsFollowUpProcedure.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mrs is not null
+
+mappingId   ClinicalCaseAdmissionThreeMMRSStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasThreeMMRS {three_m_mrs}^^xsd:integer.
+source      SELECT "case_id" , "three_m_mrs" from strokehealthcaremodel_inpatientcase si where  three_m_mrs is not null
+
+
+mappingId   3MonthsFollowUpIsResultOf
+target      data:Procedure_3MonthsFollowUpProcedure_{case_id} rdf:type resq:3MonthsFollowUpProcedure.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id is not null
+
+
+mappingId   FollowUpContactTel
+target      data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id} rdf:type resq:FollowUpContactMode  ; scdm:representsProcedure data:TelemedicineFollowUp_{case_id} ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 1
+
+mappingId   3MonthsFollowUpProcedureTel
+target      data:TelemedicineFollowUp_{case_id} rdf:type resq:TelemedicineFollowUp.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id  = 1
+
+
+mappingId   ClinicalCaseThreeMContactTelemedicineStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasContactMode resq:TelemedicineFollowUp.
+source      SELECT "case_id"  from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 1
+
+
+mappingId   FollowUpContactVis
+target      data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id} rdf:type resq:FollowUpContactMode  ; scdm:representsProcedure data:OutpatientClinicFollowUp_{case_id} ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 2
+
+mappingId   3MonthsFollowUpProcedureVis
+target      data:OutpatientClinicFollowUp_{case_id} rdf:type resq:OutpatientClinicFollowUp.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id  = 2
+
+
+mappingId   ClinicalCaseThreeMContactVisStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasContactMode resq:OutpatientClinicFollowUp.
+source      SELECT "case_id"  from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id  = 2
+
+
+mappingId   FollowUpContactNMobile
+target      data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id} rdf:type resq:FollowUpContactMode  ; scdm:representsProcedure data:MobileAppFollowUP_{case_id} ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 3
+
+mappingId   3MonthsFollowUpProcedureMobile
+target      data:MobileAppFollowUP_{case_id} rdf:type resq:MobileAppFollowUP.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id  = 3
+
+
+mappingId   ClinicalCaseThreeMContactMobileStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasContactMode resq:MobileAppFollowUP.
+source      SELECT "case_id"  from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id  = 3
+
+
+mappingId   FollowUpContactWeb
+target      data:ClinicalProcedureSt_FollowUpContactMode_three_m_mode_contact_{case_id} rdf:type resq:FollowUpContactMode  ; scdm:representsProcedure data:WebAppFollowUP_{case_id} ; scdm:isResultOf data:Procedure_3MonthsFollowUpProcedure_{case_id}.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 4
+
+mappingId   3MonthsFollowUpProcedureWeb
+target      data:WebAppFollowUP_{case_id} rdf:type resq:WebAppFollowUP.
+source      select "case_id" from strokehealthcaremodel_inpatientcase si where  three_m_mode_contact_id  = 4
+
+
+mappingId   ClinicalCaseThreeMContactWebStraight
+target      data:Case_{case_id} a resq:ClinicalCase ; scdm:hasContactMode resq:WebAppFollowUP.
+source      SELECT "case_id"  from strokehealthcaremodel_inpatientcase si where three_m_mode_contact_id = 4
+
+]]
