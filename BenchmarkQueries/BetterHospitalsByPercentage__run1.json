@@ -1,0 +1,81 @@
+{
+"queryName": "BetterHospitalsByPercentage",
+"parameters": [
+{
+"name": "start_date",
+"value": "2023-01-01"
+},
+{
+"name": "end_date",
+"value": "2023-01-31"
+},
+{
+"name": "min_age",
+"value": "50"
+},
+{
+"name": "max_age",
+"value": "90"
+},
+{
+"name": "gender_code",
+"value": "sct:248153007"
+},
+{
+"name": "gender_code",
+"value": "sct:248152002"
+},
+{
+"name": "stroke_type_code",
+"value": "sct:422504002"
+},
+{
+"name": "risk_factor_code",
+"value": "sct:38341003"
+},
+{
+"name": "discharge_medication",
+"value": "resqplus:PrescriptionOfAnyAntiplatelet"
+},
+{
+"name": "my_provider",
+"value": "2"
+},
+{
+"name": "provider",
+"value": "1"
+},
+{
+"name": "provider",
+"value": "4"
+},
+{
+"name": "provider",
+"value": "5"
+},
+{
+"name": "provider",
+"value": "6"
+},
+{
+"name": "hospital_type",
+"value": "public"
+},
+{
+"name": "provider_group",
+"value": "1"
+},
+{
+"name": "metric",
+"value": "PreNotification"
+},
+{
+"name": "min_AfterMRS",
+"value": "0"
+},
+{
+"name": "max_AfterMRS",
+"value": "5"
+}
+]
+}
