@@ -30,6 +30,14 @@
 "value": "sct:422504002"
 },
 {
+"name": "stroke_type_code",
+"value": "sct:274100004"
+},
+{
+"name": "stroke_type_code",
+"value": "sct:95455008"
+},
+{
 "name": "risk_factor_code",
 "value": "sct:38341003"
 },
@@ -67,7 +75,7 @@
 },
 {
 "name": "metric",
-"value": "PreNotification"
+"value": "KPI6"
 },
 {
 "name": "min_AfterMRS",
