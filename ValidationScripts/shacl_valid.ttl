@@ -242,10 +242,129 @@ resqplus:Door2GroinTimeShape
         sh:minCount 1 ;
     ] ;
     sh:property [
-        sh:path scdm:representsProcedure ;
+        sh:path scdm:isResultOf ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
     ] .
 
 
+resqplus:SexShapes
+    a sh:NodeShape ;
+    sh:targetClass resqplus:AdmissionGender ;
+    sh:property [
+        sh:path scdm:interpretsObservable ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:representsSituation ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+    
+
+resqplus:FollowUpMRSShapes
+    a sh:NodeShape ;
+    sh:targetClass resqplus:FollowUpMRS ;
+    sh:property [
+        sh:path scdm:hasObservable ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path ( scdm:hasObservableValue btl2:hasValue ) ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 6 ;
+        sh:message "Follow up MRS is out of range"
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:DischargePrescriptionDrugShape
+    a sh:NodeShape ;
+    sh:targetClass resqplus:DischargePrescriptionDrug ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:nodeKind sh:IRI ; 
+
+    ] ;
+    
+    sh:property [
+        sh:path ( scdm:representsProcedure rdf:type );
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            resqplus:PrescriptionOfAntidiabetics
+            resqplus:PrescriptionOfAntihypertensives 
+            resqplus:PrescriptionOfAnyAnticoagulant 
+            resqplus:PrescriptionOfOtherAnticoagulant
+            resqplus:PrescriptionOfAnyAntiplatelet 
+            resqplus:PrescriptionOfOtherAntiplatelet 
+            resqplus:PrescriptionOfApixaban 
+            resqplus:PrescriptionOfASA 
+            resqplus:PrescriptionOfCilostazol 
+            resqplus:PrescriptionOfClopidogrel 
+            resqplus:PrescriptionOfDabigatran 
+            resqplus:PrescriptionOfDipyridamole
+            resqplus:PrescriptionOfEdoxaban 
+            resqplus:PrescriptionOfHeparin 
+            resqplus:PrescriptionOfPrasugrel 
+            resqplus:PrescriptionOfRivaroxoban 
+            resqplus:PrescriptionOfStatin 
+            resqplus:PrescriptionOfTicagrelor
+            resqplus:PrescriptionOfTiclopidine
+            resqplus:PrescriptionOfWarfarin
+            resqplus:PrescriptionOfOtherDrug
+        ) ;
+        sh:message "The discharge medication must be one of the approved SNOMED/ResQ+ codes." ;
+    ] .
+
+resqplus:DischargeFacilityDepartmentShapes
+    a sh:NodeShape ;
+    sh:targetClass resqplus:DischargeFacilityDepartment ;
+    sh:property [
+        sh:path scdm:representsProcedure ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:DischargeFacilityTypeShapes
+    a sh:NodeShape ;
+    sh:targetClass resqplus:DischargeFacilityType ;
+    sh:property [
+        sh:path scdm:representsProcedure ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+resqplus:DischargeDestinationShapes
+    a sh:NodeShape ;
+    sh:targetClass resqplus:DischargeFacilityDepartment ;
+    sh:property [
+        sh:path scdm:representsProcedure ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path scdm:isResultOf ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
     
